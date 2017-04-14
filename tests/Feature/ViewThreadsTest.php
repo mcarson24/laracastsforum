@@ -2,36 +2,49 @@
 
 namespace Tests\Feature;
 
+use App\Reply;
 use App\Thread;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
 class ViewThreadsTest extends TestCase
 {
 	use DatabaseMigrations;
 
+	public function setUp()
+	{
+		parent::setUp();
+
+		$this->thread = factory(Thread::class)->create();
+	}
+
     /** @test */
     public function a_user_can_view_all_threads()
     {
-        $thread = factory(Thread::class)->create();
+    	$this->get('threads')
 
-    	$response = $this->get('threads');
-
-    	$response->assertStatus(200);
-		$response->assertSee($thread->title);
+    		 ->assertStatus(200)
+			 ->assertSee($this->thread->title);
     }
 
     /** @test */
     public function a_user_can_view_a_single_thread()
     {
-        $thread = factory(Thread::class)->create();
+        $this->get('threads/' . $this->thread->id)
 
-        $response = $this->get('threads/' . $thread->id);
+        	 ->assertStatus(200)
+        	 ->assertSee($this->thread->title)
+        	 ->assertSee($this->thread->body);
+    }
 
-        $response->assertStatus(200);
-        $response->assertSee($thread->title);
-        $response->assertSee($thread->body);
+    /** @test */
+    public function a_user_can_read_replies_associated_with_a_thread()
+    {
+    	$reply = factory(Reply::class)->create(['thread_id' => $this->thread->id]);
+
+    	$this->get('threads/' . $this->thread->id)
+    		 ->assertSee($reply->body);
     }
 }

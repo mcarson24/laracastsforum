@@ -10,6 +10,24 @@
                 <div class="panel-body">
                     {{ $thread->body }}
                 </div>
+
+                @if ($thread->replies)
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="panel">
+                                @foreach ($thread->replies as $reply)
+                                    <div class="panel-body">
+                                        {{ $reply->body }}
+                                    </div>
+                                    <div class="panel-footer">
+                                        {{ $reply->owner->name }}
+                                        {{ $reply->created_at->diffForHumans() }}
+                                    </div>
+                                @endforeach
+                            </div>  
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
