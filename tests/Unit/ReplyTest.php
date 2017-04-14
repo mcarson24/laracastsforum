@@ -16,6 +16,7 @@ class ReplyTest extends TestCase
     {
         $reply = factory(Reply::class)->make();
 
+        $this->assertInstanceOf('App\User', $reply->owner);
         $this->assertNotNull($reply->owner());
     }
 }

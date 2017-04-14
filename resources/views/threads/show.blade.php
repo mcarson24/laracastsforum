@@ -20,8 +20,8 @@
                                         {{ $reply->body }}
                                     </div>
                                     <div class="panel-footer">
-                                        {{ $reply->owner->name }}
-                                        {{ $reply->created_at->diffForHumans() }}
+                                        by {{ $reply->owner->name }}
+                                        <span class="reply-time">{{ $reply->created_at->diffForHumans() }}</span>
                                     </div>
                                 @endforeach
                             </div>  
