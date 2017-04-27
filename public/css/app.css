@@ -16,3 +16,7 @@
 	font-size: .90em;
 	font-style: italic;
 }
+
+body {
+	padding-bottom: 100px;
+}
