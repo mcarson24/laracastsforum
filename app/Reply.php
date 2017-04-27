@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
+	protected $fillable = ['body', 'user_id'];
+
 	/**
 	 * A reply was written by a single user.
 	 * 

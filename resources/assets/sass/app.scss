@@ -7,3 +7,8 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.panel-footer {
+	border-top: none;
+	border-bottom: 1px solid #D3E0E9;
+}
