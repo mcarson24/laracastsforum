@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    protected $fillable = ['user_id', 'title', 'body'];
+
 	/**
 	 * A thread can have many replies
 	 * 
