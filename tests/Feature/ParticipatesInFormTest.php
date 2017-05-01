@@ -27,8 +27,8 @@ class ParticipatesInFormTest extends DatabaseTest
     /** @test */
     public function unauthenticated_users_may_not_add_replies()
     {
-    	$this->expectException(\Illuminate\Auth\AuthenticationException::class);
-
+        $this->withExceptionHandling();
+        
         $thread = create(Thread::class);
 
         $reply = make(Reply::class);
