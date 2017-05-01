@@ -3,13 +3,10 @@
 namespace Tests\Unit;
 
 use App\Thread;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
+use Tests\DatabaseTest;
 
-class ThreadTest extends TestCase
+class ThreadTest extends DatabaseTest
 {
-	use DatabaseMigrations;
 
     protected $thread;
 

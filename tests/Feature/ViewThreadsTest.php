@@ -4,15 +4,11 @@ namespace Tests\Feature;
 
 use App\Reply;
 use App\Thread;
+use Tests\DatabaseTest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Tests\TestCase;
 
-class ViewThreadsTest extends TestCase
+class ViewThreadsTest extends DatabaseTest
 {
-	use DatabaseMigrations;
-
 	public function setUp()
 	{
 		parent::setUp();

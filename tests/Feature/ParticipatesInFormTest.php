@@ -2,20 +2,19 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use App\Reply;
 use App\Thread;
-use App\User;
+use Tests\DatabaseTest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\TestCase;
 
-class ParticipatesInFormTest extends TestCase
+class ParticipatesInFormTest extends DatabaseTest
 {
-	use DatabaseMigrations;
 
     /** @test */
     public function an_authenticated_user_may_participate_in_form_threads()
     {
-        $this->signInAs($user = create(User::class));
+        $this->signIn($user = create(User::class));
         $thread = create(Thread::class);
 
         $reply = make(Reply::class);

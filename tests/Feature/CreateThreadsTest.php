@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Thread;
 use App\User;
+use App\Thread;
+use Tests\DatabaseTest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\TestCase;
 
-class CreateThreadsTest extends TestCase
+class CreateThreadsTest extends DatabaseTest
 {
-	use DatabaseMigrations;
 
 	/** @test */
 	public function guests_cannot_create_threads()

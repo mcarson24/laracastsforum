@@ -3,13 +3,11 @@
 namespace Tests\Unit;
 
 use App\Reply;
+use Tests\DatabaseTest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 
-class ReplyTest extends TestCase
+class ReplyTest extends DatabaseTest
 {
-	use DatabaseMigrations;
 
     /** @test */
     public function it_has_an_owner()
