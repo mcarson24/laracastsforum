@@ -15,10 +15,10 @@ class ParticipatesInFormTest extends TestCase
     /** @test */
     public function an_authenticated_user_may_participate_in_form_threads()
     {
-        $this->signInAs($user = factory(User::class)->create());
-        $thread = factory(Thread::class)->create();
+        $this->signInAs($user = create(User::class));
+        $thread = create(Thread::class);
 
-        $reply = factory(Reply::class)->make();
+        $reply = make(Reply::class);
         $this->post($thread->path() . '/replies', $reply->toArray());
 
         $this->get($thread->path())
@@ -30,9 +30,9 @@ class ParticipatesInFormTest extends TestCase
     {
     	$this->expectException(\Illuminate\Auth\AuthenticationException::class);
 
-        $thread = factory(Thread::class)->create();
+        $thread = create(Thread::class);
 
-        $reply = factory(Reply::class)->make();
+        $reply = make(Reply::class);
         $this->post($thread->path() . '/replies', $reply->toArray());
     }
 }
