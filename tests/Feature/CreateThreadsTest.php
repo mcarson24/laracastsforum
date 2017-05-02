@@ -13,7 +13,7 @@ class CreateThreadsTest extends DatabaseTest
 	/** @test */
 	public function guests_cannot_create_threads()
 	{
-        $this->withExceptionHandling();
+        $this->expectException(\Illuminate\Auth\AuthenticationException::class);
 
 	    $thread = make(Thread::class);
 
@@ -24,7 +24,7 @@ class CreateThreadsTest extends DatabaseTest
     public function guests_cannot_see_new_forum_creation_form()
     {
         $this->withExceptionHandling();
-        
+
         $this->get('threads/create')
              ->assertRedirect('login');
     }

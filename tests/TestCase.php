@@ -13,7 +13,7 @@ abstract class TestCase extends BaseTestCase
 
     protected $oldExceptionHandler;
 
-    public function __setUp()
+    public function setUp()
     {
     	parent::setUp();
 
@@ -35,9 +35,9 @@ abstract class TestCase extends BaseTestCase
 
     protected function withExceptionHandling()
     {
-    	$this->app->instance(ExceptionHandler::class, $this->oldExceptionHandler);
+        $this->app->instance(ExceptionHandler::class, $this->oldExceptionHandler);
 
-    	return $this;
+        return $this;
     }
 
     protected function signIn(User $user = null)
