@@ -9,7 +9,7 @@ class Thread extends Model
     protected $fillable = ['user_id', 'title', 'body'];
 
 	/**
-	 * A thread can have many replies
+	 * A thread can have many replies.
 	 * 
 	 * @return Illuminate\Database\Eloquent\Relations\HasMany
 	 */
@@ -19,13 +19,23 @@ class Thread extends Model
     }
 
     /**	
-     * A thread is created by a single user;
+     * A thread is created by a single user.
      * 
      * @return Illuminate\Database\Eloquent\BelongsTo
      */
     public function creator()
     {
     	return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * A thread belongs to a single channel.
+     * 
+     * @return Illuminate\Database\Eloquent\BelongsTo
+     */
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
     }
 
     /**

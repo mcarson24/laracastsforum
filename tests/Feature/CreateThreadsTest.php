@@ -21,7 +21,7 @@ class CreateThreadsTest extends DatabaseTest
 	}
 
     /** @test */
-    public function guests_cannot_see_new_forum_creation_form()
+    public function guests_cannot_see_new_forum_creation_page()
     {
         $this->withExceptionHandling();
 
