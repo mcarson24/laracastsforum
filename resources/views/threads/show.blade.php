@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
                         @if (auth()->check())
-                                <form action="{{ action('RepliesController@store', $thread) }}" method="POST">
+                                <form action="{{ action('RepliesController@store', ['channel' => $thread->channel->slug, 'thread' => $thread]) }}" method="POST">
                                     {{ csrf_field() }}
                                     <div class="form-group">
                                         <textarea name="body" id="body" class="form-control" placeholder="Got something to say?"></textarea>

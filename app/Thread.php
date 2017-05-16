@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    protected $fillable = ['user_id', 'title', 'body'];
+    protected $fillable = ['user_id', 'title', 'body', 'channel_id'];
 
 	/**
 	 * A thread can have many replies.
@@ -45,7 +45,7 @@ class Thread extends Model
      */
     public function path()
     {
-    	return '/threads/' . $this->id;
+        return "/threads/{$this->channel->slug}/{$this->id}";
     }
 
     public function addReply($reply)

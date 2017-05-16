@@ -10,7 +10,7 @@
                     <div class="panel-body">
                         @foreach ($threads as $thread)
                             <article>
-                                <h4><a href="{{ action('ThreadsController@show', ['thread' => $thread]) }}">{{ $thread->title }}</a></h4>
+                                <h4><a href="{{ action('ThreadsController@show', ['channel' => $thread->channel->slug, 'thread' => $thread]) }}">{{ $thread->title }}</a></h4>
                                 <div class="body">{{ $thread->body }}</div>
                                 <hr>
                             </article>
