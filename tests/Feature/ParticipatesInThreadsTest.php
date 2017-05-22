@@ -8,7 +8,7 @@ use App\Thread;
 use Tests\DatabaseTest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ParticipatesInFormTest extends DatabaseTest
+class ParticipatesInThreadsTest extends DatabaseTest
 {
 
     /** @test */
