@@ -12,7 +12,7 @@ if (!function_exists('make'))
 {
 	function make($class, $attributes = [])
 	{
-		return factory($class)->make([]);
+		return factory($class)->make($attributes);
 	}
 }
 
