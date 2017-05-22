@@ -2,10 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Channel;
 use App\Thread;
-use Tests\DatabaseTest;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DatabaseTest;
 
 class CreateThreadsTest extends DatabaseTest
 {
@@ -34,12 +35,57 @@ class CreateThreadsTest extends DatabaseTest
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = make(Thread::class);
 
-        $this->post('/threads', $thread->toArray());
+        $response = $this->post('/threads', $thread->toArray());
 
-        $this->get($thread->path())
+        $pathToThread = $response->headers->get('Location');
+
+        $this->get($pathToThread)
              ->assertSee($thread->title)
              ->assertSee($thread->body);
+    }
+
+    /** @test */
+    public function a_thread_requires_a_title()
+    {
+        $this->publishThread([
+            'title' => null
+        ])
+             ->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    public function a_thread_requires_a_body()
+    {
+        $this->publishThread([
+            'body' => null
+        ])
+             ->assertSessionHasErrors('body');
+    }
+    /** @test */
+    public function a_thread_requires_a_valid_channel_id()
+    {
+        factory(Channel::class, 2)->create();
+
+        $this->publishThread([
+            'channel_id' => null
+        ])
+             ->assertSessionHasErrors('channel_id');
+
+        $this->publishThread([
+            'channel_id' => 99999
+        ])
+             ->assertSessionHasErrors('channel_id');
+    }
+
+    protected function publishThread($attributes = [])
+    {
+        $this->withExceptionHandling()
+             ->signIn();
+
+        $thread = make(Thread::class, $attributes);
+
+        return $this->post('/threads', $thread->toArray());
     }
 }
