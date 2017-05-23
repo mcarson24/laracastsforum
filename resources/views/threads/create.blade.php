@@ -22,10 +22,10 @@
                         		<button type="submit" class="btn btn-default btn-lg btn-block">Publish</button>
                         	</div>
                         </form>
-                        @if (session()->has('errors'))
-                            <ul class="error-box">
+                        @if ($errors->any())
+                            <ul class="alert alert-danger">
                                 @foreach ($errors->all() as $error)
-                                    <li class="error-item">{{ $error }}</li>
+                                    <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
                         @endif
