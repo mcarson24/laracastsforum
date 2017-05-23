@@ -55,7 +55,7 @@ class ThreadsController extends Controller
             'body'          => 'required',
             'channel_id'    => 'required|exists:channels,id'
         ], [
-            'channel_id.required' => 'Thread must belong to a channel.'
+            'channel_id.required' => 'Please select a channel for your new thread.'
         ]);
 
         $thread = Thread::create([
