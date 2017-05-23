@@ -10,13 +10,36 @@
                     <div class="panel-body">
                         <form action="{{ action('ThreadsController@store') }}" method="POST">
                         	{{ csrf_field() }}
+
+                            <div class="form-group">
+                                <label for="channel_id">Select a channel:</label>
+                                <select name="channel_id" 
+                                        id="channel_id" 
+                                        class="form-control {{ $errors->has('channel_id') ? 'error' : '' }}"
+                                        required>
+                                    <option value="">Choose One...</option>
+                                    @foreach($channels as $channel)
+                                        <option value="{{ $channel->id }}" {{ old('channel_id') == $channel->id ? 'selected' : '' }}>{{ $channel->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         	<div class="form-group">
                         		<label for="title">Title:</label>
-                        		<input type="text" class="form-control {{ $errors->has('title') ? 'error' : '' }}" name="title" value="{{ old('title') }}">
+                        		<input type="text" 
+                                       class="form-control {{ $errors->has('title') ? 'error' : '' }}" 
+                                       name="title" 
+                                       value="{{ old('title') }}"
+                                       required>
                         	</div>
                         	<div class="form-group">
 	                        	<label for="body">Content:</label>
-                        		<textarea name="body" id="body" class="form-control {{ $errors->has('body') ? 'error' : '' }}" rows="10">{{ old('body') }}</textarea>
+                        		<textarea name="body" 
+                                          id="body" 
+                                          class="form-control {{ $errors->has('body') ? 'error' : '' }}" 
+                                          rows="10"
+                                          required>
+                                    {{ old('body') }}
+                                </textarea>
                         	</div>
                         	<div class="form-group">
                         		<button type="submit" class="btn btn-default btn-lg btn-block">Publish</button>
