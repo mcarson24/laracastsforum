@@ -12,3 +12,19 @@
 	border-top: none;
 	border-bottom: 1px solid #D3E0E9;
 }
+
+.error {
+	border: 1.5px solid red;
+}
+
+.error-box {
+	padding: 15px;
+	background-color: red;
+	list-style: none;
+	border-radius: 5px;
+
+}
+
+.error-item {
+	color: white;
+}
