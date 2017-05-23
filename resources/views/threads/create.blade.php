@@ -8,7 +8,7 @@
                     <div class="panel-heading">Create A New Thread</div>
 
                     <div class="panel-body">
-                        <form action="{{ route('threads.store') }}" method="POST">
+                        <form action="{{ action('ThreadsController@store') }}" method="POST">
                         	{{ csrf_field() }}
                         	<div class="form-group">
                         		<label for="title">Title:</label>
