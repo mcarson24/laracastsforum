@@ -22,19 +22,7 @@ class ThreadsController extends Controller
      */
     public function index(Channel $channel, ThreadFilters $filters)
     {
-        Thread::filter($filters)->get();
-
-        if ($channel->exists)
-        {
-            $threads = $channel->threads()->latest();
-        }
-        else 
-        {
-            $threads = Thread::latest();
-        }
-
-        // If request('by'), filter threads by the author's username.
-        $threads = $threads->filter($filters)->get();
+        $threads = $this->getThreads($channel, $filters);
 
         return view('threads.index', compact('threads'));
     }
@@ -119,5 +107,23 @@ class ThreadsController extends Controller
     public function destroy(Thread $thread)
     {
         //
+    }
+
+    /**
+     * Get filtered threads by a given channel.
+     * 
+     * @param  Channel       $channel 
+     * @param  ThreadFilters $filters 
+     */
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
+    {
+        $threads = Thread::latest()->filter($filters);
+
+        if ($channel->exists)
+        {
+            $threads->where('channel_id', $channel->id);
+        }
+
+        return $threads->get();
     }
 }
