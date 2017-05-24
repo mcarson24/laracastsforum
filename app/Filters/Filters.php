@@ -41,6 +41,11 @@ abstract class Filters
 		return $builder;
 	}
 
+	/**
+	 * Get all the accepted filters that were passed in the request.
+	 * 
+	 * @return $filters
+	 */
 	public function getFilters()
 	{
 		return $this->request->intersect($this->filters);
