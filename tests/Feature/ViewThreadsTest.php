@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Channel;
 use App\Reply;
 use App\Thread;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\DatabaseTest;
 
@@ -59,5 +60,23 @@ class ViewThreadsTest extends DatabaseTest
         $this->get('threads' . '/' . $channel->slug)
              ->assertSee($threadInChannel->title)
              ->assertDontSee($threadNotInChannel->title);
+    }
+
+    /** @test */
+    public function a_user_can_find_threads_by_username()
+    {
+        $this->signIn(create(User::class, [
+            'name' => 'JohnDoe'
+        ]));
+
+        $threadByJohnDoe = create(Thread::class, [
+            'user_id' => auth()->id()
+        ]);
+
+        $threadNotByJohnDoe = create(Thread::class);
+
+        $this->get('threads?by=JohnDoe')
+             ->assertSee($threadByJohnDoe->title)
+             ->assertDontSee($threadNotByJohnDoe->title);
     }
 }
