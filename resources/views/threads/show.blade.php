@@ -9,17 +9,14 @@
 
                 <div class="panel-body">
                     {{ $thread->body }}
+                    <hr>
                 </div>
 
                 @if ($thread->replies)
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <div class="panel">
-                                @foreach ($replies as $reply)
-                                    @include('threads._reply')
-                                @endforeach
-                            </div>  
-                        </div>
+                    <div class="panel">
+                        @foreach ($replies as $reply)
+                            @include('threads._reply')
+                        @endforeach
                     </div>
                     <div class="row">
                         <div class="col-md-8 col-md-offset-1">
