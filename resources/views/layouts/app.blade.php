@@ -58,6 +58,7 @@
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Browse Threads <span class="caret"></span></a>
                           <ul class="dropdown-menu">
                             <li><a href="{{ route('threads.index') }}">All Threads</a></li>
+                            <li><a href="{{ route('threads.index') }}?popular=1">Popular</a></li>
                             @if (auth()->check())
                                 <li><a href="{{ route('threads.index') }}?by={{ auth()->user()->name }}">My Threads</a></li>
                             @endif
