@@ -28,10 +28,18 @@ class Reply extends Model
     	return $this->morphMany(Favorite::class, 'favorited');
     }
 
+    /**
+     * Favorite this reply for the authenticated user.
+     * 
+     * @return [type] [description]
+     */
     public function favorite()
     {
-    	$this->favorites()->create([
-    		'user_id' => auth()->id()
-		]);
+        $attributes = ['user_id' => auth()->id()];
+
+        if (!$this->favorites()->where($attributes)->exists())
+        {
+        	return $this->favorites()->create($attributes);
+        }
     }
 }
