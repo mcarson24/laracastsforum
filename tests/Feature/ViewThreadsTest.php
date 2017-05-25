@@ -79,4 +79,28 @@ class ViewThreadsTest extends DatabaseTest
              ->assertSee($threadByJohnDoe->title)
              ->assertDontSee($threadNotByJohnDoe->title);
     }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_popularity()
+    {
+        // Given we have three threads
+        // One with two replies, one with three, and one with zero
+        $threadWithTwoReplies = create(Thread::class);
+        create(Reply::class, [
+            'thread_id' => $threadWithTwoReplies->id
+        ], 2);
+
+        $threadWithThreeReplies = create(Thread::class);
+        create(Reply::class, [
+            'thread_id' => $threadWithThreeReplies->id
+        ], 3);
+
+        $threadWithNoReplies = $this->thread;
+
+        // When I filter threads by popularity
+        $response = $this->getJson('threads?popular=1')->json();
+
+        // Then they should be returned from mosr replied to to least replied to.
+        $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
+    }
 }
