@@ -15,10 +15,15 @@
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <div class="panel">
-                                @foreach ($thread->replies as $reply)
+                                @foreach ($replies as $reply)
                                     @include('threads._reply')
                                 @endforeach
                             </div>  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-1">
+                            {{ $replies->links() }}
                         </div>
                     </div>
                 @endif
