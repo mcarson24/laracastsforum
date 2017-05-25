@@ -17,4 +17,14 @@ class Reply extends Model
     {
     	return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * A reply can be favorited by many users.
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function favorites()		
+    {
+    	return $this->morphMany(Favorite::class, 'favorited');
+    }
 }
