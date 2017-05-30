@@ -4,6 +4,7 @@ namespace App\Http\ViewComposers;
 
 use App\Channel;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cache;
 
 class LayoutComposer 
 {
@@ -21,7 +22,9 @@ class LayoutComposer
 	 */
 	public function __construct()
 	{
-		$this->channels = Channel::all();
+		$this->channels = Cache::rememberForever('channels', function () {
+			return Channel::all();
+		});
 	}
 
 	/**
