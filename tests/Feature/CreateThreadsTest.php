@@ -95,6 +95,20 @@ class CreateThreadsTest extends DatabaseTest
     }
 
     /** @test */
+    public function an_unauthenticated_user_cannot_delete_threads()
+    {
+        $this->withExceptionHandling();
+
+        $thread = create(Thread::class);
+
+        $response = $this->delete($thread->path());
+
+        $this->assertDatabaseHas('threads', ['id' => $thread->id]);
+
+        $response->assertRedirect('login');
+    }
+
+    /** @test */
     public function a_thread_replies_are_also_delteted_when_a_thread_is_deleted()
     {
         $this->signIn();
