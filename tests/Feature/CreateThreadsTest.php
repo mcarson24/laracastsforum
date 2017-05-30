@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Channel;
+use App\Reply;
 use App\Thread;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -91,6 +92,22 @@ class CreateThreadsTest extends DatabaseTest
         $response->assertStatus(204);
 
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+    }
+
+    /** @test */
+    public function a_thread_replies_are_also_delteted_when_a_thread_is_deleted()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class);
+
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $response = $this->json('DELETE', $thread->path());
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 
     protected function publishThread($attributes = [])
