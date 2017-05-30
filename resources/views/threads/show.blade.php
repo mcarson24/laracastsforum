@@ -5,7 +5,9 @@
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
-                <div class="panel-heading">{{ $thread->title }} posted by: <span class="creator-name"><a href="#">{{ $thread->creator->name }}</a></span></div>
+                <div class="panel-heading">
+                    {{ $thread->title }} posted by: <span class="creator-name"><a href="{{ action('ProfilesController@show', $thread->creator) }}">{{ $thread->creator->name }}</a></span>
+                </div>
 
                 <div class="panel-body">
                     {{ $thread->body }}

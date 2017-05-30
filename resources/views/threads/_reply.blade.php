@@ -4,7 +4,7 @@
 <div class="panel-body">
 	<div class="level">
 		<h5 class="flex">
-		    by<a href="#"> {{ $reply->owner->name }}</a>
+		    by<a href="{{ action('ProfilesController@show', $reply->owner) }}"> {{ $reply->owner->name }}</a>
 		    <span class="reply-time">{{ $reply->created_at->diffForHumans() }}</span>
 		</h5>
 	    <div>
