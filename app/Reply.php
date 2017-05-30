@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
+    use Favoritable;
+    
 	protected $fillable = ['body', 'user_id'];
+
+    protected $with = ['owner', 'favorites'];
 
 	/**
 	 * A reply was written by a single user.
@@ -43,8 +47,23 @@ class Reply extends Model
         }
     }
 
+    /**
+     * Determine if this reply currently has any favorites.
+     * 
+     * @return boolean 
+     */
     public function isFavorited()
     {
-        return $this->favorites()->where('user_id', auth()->id())->exists();
+        return !! $this->favorites->where('user_id', auth()->id())->count();
+    }
+
+    /**
+     * Return the amount of times this reply has been favorited.
+     * 
+     * @return integer
+     */
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favorites->count();
     }
 }

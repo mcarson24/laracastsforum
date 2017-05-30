@@ -8,6 +8,8 @@ class Thread extends Model
 {
     protected $fillable = ['user_id', 'title', 'body', 'channel_id'];
 
+    protected $with = ['creator', 'channel'];
+
     /**
      * @return void
      */

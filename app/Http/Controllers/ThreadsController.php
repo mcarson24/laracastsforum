@@ -62,7 +62,6 @@ class ThreadsController extends Controller
             'body'          => $request->body
         ]);
 
-
         return redirect($thread->path());   
     }
 
@@ -122,7 +121,7 @@ class ThreadsController extends Controller
      */
     protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
-        $threads = Thread::with('channel')->latest()->filter($filters);
+        $threads = Thread::with('creator')->latest()->filter($filters);
 
         if ($channel->exists)
         {
