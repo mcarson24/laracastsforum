@@ -6,7 +6,16 @@
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ $thread->title }} posted by: <span class="creator-name"><a href="{{ action('ProfilesController@show', $thread->creator) }}">{{ $thread->creator->name }}</a></span>
+                    <div class="level">
+                        <span class="flex">
+                            {{ $thread->title }} posted by: <span class="creator-name"><a href="{{ action('ProfilesController@show', $thread->creator) }}">{{ $thread->creator->name }}</a></span>
+                        </span>
+                        <form action="{{ action('ThreadsController@destroy', [$thread->channel, $thread]) }}" method="POST">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <button type="submit" class="btn btn-link">Delete</button>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="panel-body">
