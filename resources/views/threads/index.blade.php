@@ -8,6 +8,11 @@
                     <div class="panel-heading">Forum Threads</div>
 
                     <div class="panel-body">
+                        @if ($threads->isEmpty())
+                            <p>There is nothing here. Why not start a thread of your own 
+                                <a href="{{ action('ThreadsController@create') }}">here</a>?
+                            </p>
+                        @endif
                         @foreach ($threads as $thread)
                             <article>
                                 <div class="level">
