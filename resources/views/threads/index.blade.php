@@ -17,7 +17,7 @@
                             <article>
                                 <div class="level">
                                     <h4 class="flex">
-                                        <a href="{{ action('ThreadsController@show', ['channel' => $thread->channel->slug, 'thread' => $thread]) }}">{{ $thread->title }}</a>
+                                        <a href="{{ action('ThreadsController@show', [$thread->channel, $thread]) }}">{{ $thread->title }}</a>
                                     </h4>
                                     <a href="{{ action('ThreadsController@show', [$thread->channel, $thread]) }}">
                                         <strong>{{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}</strong>
