@@ -10,11 +10,13 @@
                         <span class="flex">
                             {{ $thread->title }} posted by: <span class="creator-name"><a href="{{ action('ProfilesController@show', $thread->creator) }}">{{ $thread->creator->name }}</a></span>
                         </span>
-                        <form action="{{ action('ThreadsController@destroy', [$thread->channel, $thread]) }}" method="POST">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            <button type="submit" class="btn btn-link">Delete</button>
-                        </form>
+                        @can ('update', $thread)
+                            <form action="{{ action('ThreadsController@destroy', [$thread->channel, $thread]) }}" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <button type="submit" class="btn btn-link">Delete</button>
+                            </form>
+                        @endcan
                     </div>
                 </div>
 
