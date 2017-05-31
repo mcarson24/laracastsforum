@@ -81,11 +81,11 @@ class CreateThreadsTest extends DatabaseTest
     }
 
     /** @test */
-    public function a_thread_can_be_deleted()
+    public function a_thread_can_be_deleted_by_authorized_users()
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
 
         $response = $this->json('DELETE', $thread->path());
 
@@ -101,11 +101,13 @@ class CreateThreadsTest extends DatabaseTest
 
         $thread = create(Thread::class);
 
-        $response = $this->delete($thread->path());
-
+        $this->delete($thread->path())
+             ->assertRedirect('login');
         $this->assertDatabaseHas('threads', ['id' => $thread->id]);
 
-        $response->assertRedirect('login');
+        $this->signIn();
+        $this->delete($thread->path())
+             ->assertStatus(403);
     }
 
     /** @test */
@@ -113,7 +115,7 @@ class CreateThreadsTest extends DatabaseTest
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
 
         $reply = create(Reply::class, ['thread_id' => $thread->id]);
 
