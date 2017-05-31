@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                @foreach ($threads as $thread)
+                @forelse ($threads as $thread)
                     <div class="panel panel-default">   
                         <div class="panel-heading">
                             <div class="level">
@@ -23,12 +23,11 @@
                             </article>
                         </div>
                     </div>
-                    @endforeach
-                    @if ($threads->isEmpty())
-                        <p>There is nothing here. Why not start a thread of your own 
-                            <a href="{{ action('ThreadsController@create') }}">here</a>?
+                    @empty
+                        <p>There is nothing here. Why not 
+                            <a href="{{ action('ThreadsController@create') }}">start a thread of your own</a>?
                         </p>
-                    @endif
+                    @endforelse
             </div>
         </div>
     </div>
