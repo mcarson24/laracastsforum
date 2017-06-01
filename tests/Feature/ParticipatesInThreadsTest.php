@@ -32,7 +32,7 @@ class ParticipatesInThreadsTest extends DatabaseTest
         $thread = create(Thread::class);
 
         $reply = make(Reply::class);
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $this->post($thread->path($thread->channel, $thread) . '/replies', $reply->toArray());
     }
 
     /** @test */

@@ -9,9 +9,18 @@ trait RecordsActivity
 	protected static function bootRecordsActivity()
 	{
 		if (auth()->guest()) return;
-		static::created(function($model) {
-			$model->recordActivity('created');
-		});
+
+		foreach (static::getRecordableActivities() as $activity)
+		{
+			static::$activity(function($model) use ($activity) {
+				$model->recordActivity($activity);
+			});
+		}
+	}
+
+	protected static function getRecordableActivities()
+	{
+		return ['created'];
 	}
 
 	protected function recordActivity($eventType)

@@ -12,35 +12,20 @@
 					</h1>
 				</div>
 
-				@foreach ($threads as $thread)
-					<div class="panel panel-default">
-		                <div class="panel-heading">
-							<div class="level">
-								<span class="flex">
-									{{ $thread->title }} 	
-								</span>
-			                	<span class="creator-name">
-			                		{{ $thread->created_at->diffForHumans() }}
-		                		</span>
-		                	</div>
-		            	</div>
-
-		                <div class="panel-body">
-		                    {{ $thread->body }}
-		                    <hr>
-		                </div>
-
-						<div class="container">
-							<div class="row">
-			                    <div class="col-md-8">
-									{{ $threads->links() }}
-			                    </div>
-			                </div>
-		                </div>
-
-		            </div>
+				@foreach ($activities as $date => $dayActivities)
+					<h3 class="page-header">{{ $date }}</h3>
+					@foreach ($dayActivities as $activity)
+						@include("profiles.activities.{$activity->type}")
+					@endforeach
 				@endforeach
-			</div>
+				{{-- <div class="container">
+					<div class="row">
+	                    <div class="col-md-8">
+							{{ $activities->links() }}
+	                    </div>
+	                </div>
+                </div>
+			</div> --}}
 		</div>
 	</div>		
 
