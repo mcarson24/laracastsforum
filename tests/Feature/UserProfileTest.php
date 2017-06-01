@@ -34,4 +34,23 @@ class UserProfileTest extends DatabaseTest
     		 ->assertSee($thread->title)
     		 ->assertSee($thread->body);
     }
+
+    /** @test */
+    public function a_profile_shows_the_correct_users_feed()
+    {
+        $user = create(User::class);
+
+        $this->signIn($user);
+
+        $threadToSee = create(Thread::class, ['user_id' => $user->id]);
+
+
+        $this->signIn(create(User::class));
+
+        $threadToNotSee = create(Thread::class, ['user_id' => auth()->id()]);
+
+        $this->get("profiles/{$user->name}")
+             ->assertSee($threadToSee->title)
+             ->assertDontSee($threadToNotSee->title);
+    }
 }
