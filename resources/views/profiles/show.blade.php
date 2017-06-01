@@ -18,14 +18,6 @@
 						@include("profiles.activities.{$activity->type}")
 					@endforeach
 				@endforeach
-				{{-- <div class="container">
-					<div class="row">
-	                    <div class="col-md-8">
-							{{ $activities->links() }}
-	                    </div>
-	                </div>
-                </div>
-			</div> --}}
 		</div>
 	</div>		
 
