@@ -44,7 +44,7 @@ class ActivityTest extends DatabaseTest
     {
         $this->signIn();
 
-        create(Thread::class, [], 2);
+        create(Thread::class, ['user_id' => auth()->id()], 2);
 
         auth()->user()->activity()->first()->update(['created_at' => Carbon::now()->subWeek()]);
 
