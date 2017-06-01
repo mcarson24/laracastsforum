@@ -20,10 +20,9 @@ class UserProfileTest extends DatabaseTest
     /** @test */
     public function profiles_display_all_threads_by_the_user()
     {
-    	$user = create(User::class);
-        $this->signIn($user);
+        $this->signIn();
         
-    	$thread = create(Thread::class, ['user_id' => $user->id]);
+    	$thread = create(Thread::class, ['user_id' => auth()->id()]);
 
         $this->assertDatabaseHas('activities', [
             'subject_id'    => 1,
@@ -31,7 +30,7 @@ class UserProfileTest extends DatabaseTest
             'type'          => 'created_thread'
         ]);
 
-    	$this->get("profiles/{$user->name}")
+    	$this->get('profiles/' . auth()->user()->name)
     		 ->assertSee($thread->title)
     		 ->assertSee($thread->body);
     }
