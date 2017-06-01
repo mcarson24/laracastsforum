@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    use RecordsActivity;
+
     protected $fillable = ['user_id', 'title', 'body', 'channel_id'];
 
     protected $with = ['creator', 'channel'];

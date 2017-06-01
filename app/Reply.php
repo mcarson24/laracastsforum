@@ -2,11 +2,12 @@
 
 namespace App;
 
+use App\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    use Favoritable;
+    use Favoritable, RecordsActivity;
 
 	protected $fillable = ['body', 'user_id'];
 
