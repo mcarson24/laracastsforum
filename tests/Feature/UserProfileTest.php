@@ -11,10 +11,10 @@ class UserProfileTest extends DatabaseTest
     /** @test */
     public function a_user_has_a_profile()
     {
-    	$user = create(User::class);
+    	$this->signIn();
 
-        $this->get("profiles/{$user->name}")
-        	 ->assertSee($user->name);
+        $this->get("profiles/" . auth()->user()->name)
+        	 ->assertSee(auth()->user()->name);
     }
 
     /** @test */
