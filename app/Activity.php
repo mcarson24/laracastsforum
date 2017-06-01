@@ -19,7 +19,7 @@ class Activity extends Model
     	return static::where('user_id', auth()->id())
     				->latest()
     				->with('subject')
-    				->take(35)
+    				->take($amount)
     				->get()
     				->groupBy(function($activity) {
     					return $activity->created_at->format('Y-m-d');
