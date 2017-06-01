@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Activity;
 use App\Channel;
 use App\Reply;
 use App\Thread;
@@ -111,7 +112,7 @@ class CreateThreadsTest extends DatabaseTest
     }
 
     /** @test */
-    public function a_thread_replies_are_also_delteted_when_a_thread_is_deleted()
+    public function a_threads_replies_are_also_delteted_when_a_thread_is_deleted()
     {
         $this->signIn();
 
@@ -124,6 +125,21 @@ class CreateThreadsTest extends DatabaseTest
         $response->assertStatus(204);
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+    /** @test */
+    public function a_threads_activity_is_also_deleted_when_a_thread_is()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $response = $this->json('DELETE', $thread->path());
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertEquals(0, Activity::count());
     }
 
     protected function publishThread($attributes = [])

@@ -16,6 +16,10 @@ trait RecordsActivity
 				$model->recordActivity($activity);
 			});
 		}
+
+		static::deleting(function($model) {
+			$model->activity()->delete();
+		});
 	}
 
 	protected static function getRecordableActivities()
