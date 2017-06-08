@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
 
@@ -29,5 +30,17 @@ class RepliesController extends Controller
 		]);
 
 		return back()->with('flash', 'Your reply has been added.');
+    }
+
+    public function destroy(Reply $reply)
+    {
+    	if (auth()->id() != $reply->owner->id)
+    	{
+    		return response([], 403);
+    	}
+
+    	$reply->delete();
+
+    	return back();
     }
 }

@@ -50,4 +50,37 @@ class ParticipatesInThreadsTest extends DatabaseTest
         $this->post($thread->path() . '/replies', $reply->toArray())
              ->assertSessionHasErrors('body');
     }
+
+    /** @test */
+    public function an_unauthorized_user_cannot_delete_replies()
+    {
+        $reply = create(Reply::class);
+
+        $this->withExceptionHandling()
+             ->delete("replies/{$reply->id}")
+             ->assertRedirect('login');
+
+        // As an authenticated user, attempt to delete
+        // another user's reply.
+        
+        $this->signIn()
+             ->delete("replies/{$reply->id}")
+             ->assertStatus(403);
+    }
+
+    /** @test */
+    public function authorized_users_can_delete_their_replies()
+    {
+        $reply = create(Reply::class);
+        $this->signIn($reply->owner);
+
+        $response = $this->delete("replies/{$reply->id}");
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseMissing('replies', [
+            'id'    => $reply->id,
+            'body'  => $reply->body
+        ]);
+    }
 }
