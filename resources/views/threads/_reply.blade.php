@@ -1,4 +1,4 @@
-<div class="panel-heading">
+<div id="reply-{{ $reply->id }}" class="panel-heading">
     {{ $reply->body }}
 </div>
 <div class="panel-body">
