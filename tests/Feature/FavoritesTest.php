@@ -26,10 +26,8 @@ class FavoritesTest extends DatabaseTest
 
     	$reply = create(Reply::class);
 
-        // If I post to a 'favorites' endpoint
         $this->post('replies/' . $reply->id . '/favorites');
 
-        // It should be recored in the database
         $this->assertCount(1, $reply->favorites);
     }
 

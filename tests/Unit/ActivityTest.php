@@ -40,6 +40,24 @@ class ActivityTest extends DatabaseTest
     }
 
     /** @test */
+    public function it_records_when_a_reply_is_favorited()
+    {
+        $reply = create(Reply::class);
+
+        $this->signIn();
+
+        $reply->favorite();
+
+        $this->assertDatabaseHas('favorites', [
+            'user_id'           => auth()->id(),
+            'favorited_id'      => $reply->id,
+            'favorited_type'    => get_class($reply)
+        ]);
+
+        $this->assertEquals(1, Activity::count());
+    }
+
+    /** @test */
     public function it_can_get_an_activity_feed_for_a_user()
     {
         $this->signIn();
