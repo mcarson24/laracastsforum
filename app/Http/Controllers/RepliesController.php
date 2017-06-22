@@ -15,6 +15,7 @@ class RepliesController extends Controller
 
 	/**
 	 * Store a new reply in the database.
+     * 
 	 * @param         $channelId 
 	 * @param  Thread $thread       
 	 */
@@ -32,6 +33,13 @@ class RepliesController extends Controller
 		return back()->with('flash', 'Your reply has been added.');
     }
 
+    /**
+     * Remove a reply from the database.
+     * 
+     * @param  Reply  $reply 
+     * @return \Illuminate\Http\Response
+     * 
+     */
     public function destroy(Reply $reply)
     {
     	if (auth()->id() != $reply->owner->id)

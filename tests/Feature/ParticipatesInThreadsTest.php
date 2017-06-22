@@ -74,13 +74,11 @@ class ParticipatesInThreadsTest extends DatabaseTest
         $reply = create(Reply::class);
         $this->signIn($reply->owner);
 
-        $response = $this->delete("replies/{$reply->id}");
-
-        $response->assertStatus(302);
-
-        $this->assertDatabaseMissing('replies', [
-            'id'    => $reply->id,
-            'body'  => $reply->body
-        ]);
+        $this->delete("replies/{$reply->id}")
+             ->assertStatus(302);
+             ->assertDatabaseMissing('replies', [
+                'id'    => $reply->id,
+                'body'  => $reply->body
+            ]);
     }
 }
