@@ -76,7 +76,7 @@ class ParticipatesInThreadsTest extends DatabaseTest
 
         $this->delete("replies/{$reply->id}")
              ->assertStatus(302);
-             ->assertDatabaseMissing('replies', [
+        $this->assertDatabaseMissing('replies', [
                 'id'    => $reply->id,
                 'body'  => $reply->body
             ]);
