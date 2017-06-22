@@ -81,4 +81,37 @@ class ParticipatesInThreadsTest extends DatabaseTest
                 'body'  => $reply->body
             ]);
     }
+
+    /** @test */
+    public function authorizes_users_can_update_replies()
+    {
+        $reply = create(Reply::class);
+        $this->signIn($reply->owner);
+
+        $this->patch("replies/{$reply->id}", [
+            'body' => 'This is the new body.'
+        ]);
+
+        $this->assertDatabaseHas('replies' ,[
+            'id'    => $reply->id,
+            'body'  => 'This is the new body.'
+        ]);
+    }
+
+    /** @test */
+    public function an_unauthorized_user_cannot_edit_replies()
+    {
+        $reply = create(Reply::class);
+
+        $this->withExceptionHandling()
+             ->patch("replies/{$reply->id}")
+             ->assertRedirect('login');
+
+        // As an authenticated user, attempt to delete
+        // another user's reply.
+        
+        $this->signIn()
+             ->patch("replies/{$reply->id}")
+             ->assertStatus(403);
+    }
 }

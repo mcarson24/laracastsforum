@@ -34,6 +34,19 @@ class RepliesController extends Controller
     }
 
     /**
+     * Update a reply in storage.
+     * @param  Reply   $reply   [description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function update(Reply $reply, Request $request)
+    {
+        $this->authorize('update', $reply);
+        
+        $reply->update($request->only('body'));
+    }
+
+    /**
      * Remove a reply from the database.
      * 
      * @param  Reply  $reply 
