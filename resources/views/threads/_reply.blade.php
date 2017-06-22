@@ -17,3 +17,12 @@
 	    </div>
     </div>
 </div>
+@can ('update', $reply)
+	<div class="panel-footer">
+		<form action="{{ action('RepliesController@destroy', $reply) }}" method="POST">
+			{{ csrf_field() }}
+			{{ method_field('DELETE') }}
+			<button class="btn btn-default btn-xs">Delete</button>
+		</form>
+	</div>
+@endcan
