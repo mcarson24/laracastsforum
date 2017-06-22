@@ -14,6 +14,14 @@
 				});
 				flash('Updated your reply!');
 				this.editing = false;
+			},
+			destroy() {
+				axios.delete('/replies/' + this.attributes.id);
+
+				$(this.$el).fadeOut(300, () => {
+					flash('Deleted your reply!');
+				});
+
 			}
 		}
 	}

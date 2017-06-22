@@ -29,11 +29,7 @@
 		@can ('update', $reply)
 			<div class="panel-footer level">
 				<button class="btn btn-default btn-xs mr-1" @click="editing = !editing">Edit</button>
-				<form action="{{ action('RepliesController@destroy', $reply) }}" method="POST">
-					{{ csrf_field() }}
-					{{ method_field('DELETE') }}
-					<button type="submit" class="btn btn-default btn-xs">Delete</button>
-				</form>
+				<button class="btn btn-default btn-xs" @click="destroy">Delete</button>
 			</div>
 		@endcan
 	</div>

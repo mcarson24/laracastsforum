@@ -12195,7 +12195,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-
+/* WEBPACK VAR INJECTION */(function($) {
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: ['attributes'],
 	data: function data() {
@@ -12212,9 +12212,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			});
 			flash('Updated your reply!');
 			this.editing = false;
+		},
+		destroy: function destroy() {
+			axios.delete('/replies/' + this.attributes.id);
+
+			$(this.$el).fadeOut(300, function () {
+				flash('Deleted your reply!');
+			});
 		}
 	}
 });
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(8)))
 
 /***/ }),
 /* 33 */
