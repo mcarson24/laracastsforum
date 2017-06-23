@@ -15,13 +15,15 @@ class UnfavoritingRepliesTest extends DuskTestCase
     public function unfavoriting_a_reply_removes_the_favorited_activity()
     {
         $this->be($user = factory(User::class)->create(
-            ['password' => bcrypt('password')]));
+            ['password' => bcrypt('password')]
+        ));
         $thread = factory(Thread::class)->create();
         $reply = factory(Reply::class)->create([
             'thread_id' => $thread->id
         ]);
+
         $reply->favorite();
-        // dd($thread);
+        
         $this->browse(function (Browser $browser) use ($thread, $user) {
         $browser->visit('login')
                     ->type('email', $user->email)
@@ -29,7 +31,6 @@ class UnfavoritingRepliesTest extends DuskTestCase
                     ->press('Login')
                     ->assertPathIs('/home')
                     ->visit('threads/' . $thread->channel->slug . '/' . $thread->id)
-                    ->pause(5000)
                     ->press('1')
                     ->visit('profiles/' . $user->name)
                     ->assertSee($user->name)
