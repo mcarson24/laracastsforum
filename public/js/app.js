@@ -12160,7 +12160,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			favoritesCount: this.reply.favoritesCount,
-			isFavorited: true
+			isFavorited: this.reply.isFavorited
 		};
 	},
 

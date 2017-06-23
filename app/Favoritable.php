@@ -52,6 +52,17 @@ trait Favoritable
     }
 
     /**
+     * Return whether or not the favoritable object has 
+     * been favorited by the current authenticated user.
+     * 
+     * @return boolean
+     */
+    public function getIsFavoritedAttribute()
+    {
+        return $this->isFavorited();
+    }
+
+    /**
      * Return the amount of times this resource has been favorited.
      * 
      * @return integer
