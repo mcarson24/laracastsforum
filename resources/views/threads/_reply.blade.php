@@ -17,12 +17,13 @@
 				    <span class="reply-time">{{ $reply->created_at->diffForHumans() }}</span>
 				</h5>
 			    <div>
-			    	<form action="{{ action('FavoritesController@store', $reply) }}" method="POST">
+			    	<favorite :reply="{{ $reply }}"></favorite>
+			    	{{-- <form action="{{ action('FavoritesController@store', $reply) }}" method="POST">
 		    			{{ csrf_field() }}
 						<button type="submit" class="btn btn-default" {{ $reply->isFavorited() ? 'disabled' : '' }}>
 							{{ $reply->favorites_count }} {{ str_plural('favorite', $reply->favorites_count) }}
 						</button>
-			    	</form>
+			    	</form> --}}
 			    </div>
 		    </div>
 		</div>
