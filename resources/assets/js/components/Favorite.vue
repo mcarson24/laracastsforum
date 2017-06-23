@@ -1,5 +1,5 @@
 <template>
-	<button type="submit" :class="classes" @click="toggle">
+	<button id="favorite" type="submit" :class="classes" @click="toggle">
 		<span class="glyphicon glyphicon-heart"></span>
 		<span v-text="count"></span>
 	</button>
