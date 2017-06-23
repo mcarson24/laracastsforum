@@ -12167,19 +12167,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	computed: {
 		classes: function classes() {
 			return ['btn', this.isFavorited ? 'btn-primary' : 'btn-default'];
+		},
+		endpoint: function endpoint() {
+			return '/replies/' + this.reply.id + '/favorites';
 		}
 	},
 	methods: {
 		toggle: function toggle() {
-			if (this.isFavorited) {
-				axios.delete('/replies/' + this.reply.id + '/favorites');
-				this.isFavorited = false;
-				this.favoritesCount--;
-			} else {
-				axios.post('/replies/' + this.reply.id + '/favorites');
-				this.isFavorited = true;
-				this.favoritesCount++;
-			}
+			return this.isFavorited ? this.unfavorite() : this.favorite();
+		},
+		unfavorite: function unfavorite() {
+			axios.delete(this.endpoint);
+			this.isFavorited = false;
+			this.favoritesCount--;
+		},
+		favorite: function favorite() {
+			axios.post(this.endpoint);
+			this.isFavorited = true;
+			this.favoritesCount++;
 		}
 	}
 });
