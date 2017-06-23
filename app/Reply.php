@@ -13,6 +13,8 @@ class Reply extends Model
 
     protected $with = ['owner', 'favorites'];
 
+    protected $appends = ['favoritesCount'];
+
 	/**
 	 * A reply was written by a single user.
 	 * 
