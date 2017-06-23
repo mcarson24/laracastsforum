@@ -3,11 +3,12 @@
 namespace Tests\Feature;
 
 use App\Reply;
-use Tests\TestCase;
-use Tests\DatabaseTest;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\DatabaseTest;
+use Tests\TestCase;
 
 class FavoritesTest extends DatabaseTest
 {
@@ -46,5 +47,17 @@ class FavoritesTest extends DatabaseTest
         }
         
         $this->assertCount(1, $reply->favorites);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_unfavorite_replies()
+    {
+        $this->signIn();
+        $reply = create(Reply::class);
+        $reply->favorite();
+
+        $this->delete("replies/{$reply->id}/favorites");
+
+        $this->assertCount(0, $reply->favorites);
     }
 }

@@ -13,10 +13,27 @@ class FavoritesController extends Controller
 		$this->middleware('auth');
 	}
 
+	/**
+	 * Add a new favorite to the database.
+	 * 
+	 * @param  Reply  $reply 
+     * @return \Illuminate\Http\Response
+	 */
 	public function store(Reply $reply)
 	{
 		$reply->favorite();
 
 		return back();
+	}
+
+	/**
+	 * Remove a favorite from the database.
+	 * 
+	 * @param  Reply  $reply 
+     * @return \Illuminate\Http\Response
+	 */
+	public function destroy(Reply $reply)
+	{
+		$reply->unfavorite();
 	}
 }

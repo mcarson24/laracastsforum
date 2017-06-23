@@ -30,6 +30,18 @@ trait Favoritable
     }
 
     /**
+     * Unfavorite the resource for the authenticated user.
+     * 
+     * @return [type] [description]
+     */
+    public function unfavorite()
+    {
+        $attributes = ['user_id' => auth()->id()];
+
+        $this->favorites()->where($attributes)->delete();
+    }
+
+    /**
      * Determine if this resource currently has any favorites.
      * 
      * @return boolean 
