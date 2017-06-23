@@ -12159,7 +12159,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	props: ['reply'],
 	data: function data() {
 		return {
-			favoritesCount: this.reply.favoritesCount,
+			count: this.reply.favoritesCount,
 			isFavorited: this.reply.isFavorited
 		};
 	},
@@ -12179,12 +12179,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		unfavorite: function unfavorite() {
 			axios.delete(this.endpoint);
 			this.isFavorited = false;
-			this.favoritesCount--;
+			this.count--;
 		},
 		favorite: function favorite() {
 			axios.post(this.endpoint);
 			this.isFavorited = true;
-			this.favoritesCount++;
+			this.count++;
 		}
 	}
 });
@@ -31982,7 +31982,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "glyphicon glyphicon-heart"
   }), _vm._v(" "), _c('span', {
     domProps: {
-      "textContent": _vm._s(_vm.favoritesCount)
+      "textContent": _vm._s(_vm.count)
     }
   })])
 },staticRenderFns: []}
