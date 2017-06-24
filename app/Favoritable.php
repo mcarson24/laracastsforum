@@ -4,6 +4,13 @@ namespace App;
 
 trait Favoritable
 {
+    protected static function bootFavoritable()
+    {
+        static::deleting(function($model) {
+            $model->favorites->each->delete();
+        });
+    }
+
 	/**
      * This resource can be favorited by many users.
      * 
