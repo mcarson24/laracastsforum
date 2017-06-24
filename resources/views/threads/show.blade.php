@@ -27,31 +27,16 @@
                         </div>
 
                         @if ($thread->replies)
-                            <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
+                            <replies :data="{{ $thread->replies }}" 
+                                     @added="repliesCount++" 
+                                     @removed="repliesCount--">
+                            </replies>
                             <div class="row">
                                 <div class="col-md-8 col-md-offset-1">
                                     {{ $replies->links() }}
                                 </div>
                             </div> 
                         @endif
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1 mr-top-25">
-                                @if (auth()->check())
-                                    <form action="{{ action('RepliesController@store', ['channel' => $thread->channel->slug, 'thread' => $thread]) }}" method="POST">
-                                        {{ csrf_field() }}
-                                        <div class="form-group">
-                                            <textarea name="body" id="body" class="form-control" placeholder="Got something to say?"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-default btn-block">Post</button>
-                                        </div>
-                                    </form>
-                                @else
-                                    <p class="text-center"><a href="{{ route('register') }}">Register</a> to participate in this discussion.</p>
-                                    <p class="text-center">Already a member? <a href="{{ route('login') }}">Sign in here</a>!</p>
-                                @endif
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">

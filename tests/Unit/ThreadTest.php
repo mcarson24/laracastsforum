@@ -36,7 +36,7 @@ class ThreadTest extends DatabaseTest
     /** @test */
     public function a_thread_has_a_path_property()
     {
-        $this->assertEquals("http://localhost/threads/{$this->thread->channel->slug}/{$this->thread->id}", $this->thread->path());
+        $this->assertEquals("http://forum.dev/threads/{$this->thread->channel->slug}/{$this->thread->id}", $this->thread->path());
     }
 
     /** @test */
@@ -44,7 +44,7 @@ class ThreadTest extends DatabaseTest
     {
         $thread = create(Thread::class);
 
-        $this->assertEquals("http://localhost/threads/{$thread->channel->slug}/{$thread->id}", $thread->path());
+        $this->assertEquals("http://forum.dev/threads/{$thread->channel->slug}/{$thread->id}", $thread->path());
     }
 
     /** @test */

@@ -72,9 +72,15 @@ class Thread extends Model
         return action('ThreadsController@show', [$this->channel, $this]);
     }
 
+    /**
+     * Add a new reply to the current thread.
+     * 
+     * @param   array $reply
+     * @return  Reply
+     */
     public function addReply($reply)
     {
-        $this->replies()->create($reply);
+        return $this->replies()->create($reply);
     }
 
     public function scopeFilter($query, $filters)
