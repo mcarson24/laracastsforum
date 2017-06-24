@@ -16,9 +16,12 @@
 				    by<a href="{{ action('ProfilesController@show', $reply->owner) }}"> {{ $reply->owner->name }}</a>
 				    <span class="reply-time">{{ $reply->created_at->diffForHumans() }}</span>
 				</h5>
-			    <div>
-			    	<favorite :reply="{{ $reply }}"></favorite>
-			    </div>
+			    	@if (auth()->check())
+				    	<favorite :reply="{{ $reply }}"></favorite>
+			    	@else
+				    	<span class="glyphicon glyphicon-heart mr-quarter"></span>
+			    		<span>{{ $reply->favoritesCount }}</span>
+			    	@endif
 		    </div>
 		</div>
 		@can ('update', $reply)

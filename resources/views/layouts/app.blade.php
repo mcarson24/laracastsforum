@@ -30,9 +30,14 @@
             flex: 1;
         }
 
+        .mr-quarter {
+            margin-right: .25em;
+        }
+
         .mr-1 {
             margin-right: 1em;
         }
+
         [v-cloak] {
             display: none;
         }
