@@ -13,23 +13,22 @@
 		<div class="panel-body">
 			<div class="level">
 				<h5 class="flex">
-				    by<a :href="'/profiles/' + data.owner.id" v-text="data.owner.name"></a>
+				    by<a :href="'/profiles/' + data.owner.name" v-text="data.owner.name"></a>
 				    <span class="reply-time">{{ data.created_at }}</span>
 				</h5>
-			    	<!-- @if (auth()->check())
-				    	<favorite :reply="{{ $reply }}"></favorite>
-			    	@else
+					<div v-if="signedIn">
+				    	<favorite :reply="data"></favorite>
+			    	</div>
+			    	<div v-else>
 				    	<span class="glyphicon glyphicon-heart mr-quarter"></span>
-			    		<span>{{ $reply->favoritesCount }}</span>
-			    	@endif -->
+			    		<span>{{ data.favoritesCount }}</span>
+		    		</div>
 		    </div>
 		</div>
-		<!-- @can ('update', $reply) -->
-			<div class="panel-footer level">
+			<div class="panel-footer level" v-show="canUpdate">
 				<button class="btn btn-default btn-xs mr-1" @click="editing = !editing">Edit</button>
 				<button class="btn btn-default btn-xs" @click="destroy">Delete</button>
 			</div>
-		<!-- @endcan -->
 	</div>
 </template>
 
@@ -45,6 +44,14 @@
 				body: this.data.body,
 				id: this.data.id
 			};
+		},
+		computed: {
+			signedIn() {
+				return window.App.signedIn;
+			},
+			canUpdate() {
+				return this.authorize(user => this.data.user_id === user.id);
+			}
 		},
 		methods: {
 			update() {

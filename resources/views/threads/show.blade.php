@@ -32,10 +32,10 @@
                                 <div class="col-md-8 col-md-offset-1">
                                     {{ $replies->links() }}
                                 </div>
-                            </div> --}}
+                            </div> 
                         @endif
                         <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
+                            <div class="col-md-10 col-md-offset-1 mr-top-25">
                                 @if (auth()->check())
                                     <form action="{{ action('RepliesController@store', ['channel' => $thread->channel->slug, 'thread' => $thread]) }}" method="POST">
                                         {{ csrf_field() }}

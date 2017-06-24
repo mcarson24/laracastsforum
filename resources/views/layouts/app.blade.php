@@ -15,11 +15,14 @@
 
     <!-- Scripts -->
     <script>
-        window.Laravel = {!! json_encode([
+        window.App = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'signedIn'  => auth()->check(),
+            'user'      => auth()->user(),
         ]) !!};
     </script>
 
+    <!-- Temporary Styles -->
     <style>
         .level {
             display: flex;
@@ -36,6 +39,10 @@
 
         .mr-1 {
             margin-right: 1em;
+        }
+
+        .mr-top-25 {
+            margin-top: 25px;
         }
 
         [v-cloak] {

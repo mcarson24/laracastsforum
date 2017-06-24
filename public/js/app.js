@@ -12316,7 +12316,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -12331,6 +12330,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		};
 	},
 
+	computed: {
+		signedIn: function signedIn() {
+			return window.App.signedIn;
+		},
+		canUpdate: function canUpdate() {
+			var _this = this;
+
+			return this.authorize(function (user) {
+				return _this.data.user_id === user.id;
+			});
+		}
+	},
 	methods: {
 		update: function update() {
 			axios.patch('/replies/' + this.data.id, {
@@ -12395,6 +12406,12 @@ __webpack_require__(37);
 
 window.Vue = __webpack_require__(53);
 
+Vue.prototype.authorize = function (handler) {
+  var user = window.App.user;
+
+  return user ? handler(user) : false;
+};
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -12404,7 +12421,7 @@ window.Vue = __webpack_require__(53);
 window.axios = __webpack_require__(13);
 
 window.axios.defaults.headers.common = {
-  'X-CSRF-TOKEN': window.Laravel.csrfToken,
+  'X-CSRF-TOKEN': window.App.csrfToken,
   'X-Requested-With': 'XMLHttpRequest'
 };
 
@@ -32235,14 +32252,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "flex"
   }, [_vm._v("\n\t\t\t    by"), _c('a', {
     attrs: {
-      "href": '/profiles/' + _vm.data.owner.id
+      "href": '/profiles/' + _vm.data.owner.name
     },
     domProps: {
       "textContent": _vm._s(_vm.data.owner.name)
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "reply-time"
-  }, [_vm._v(_vm._s(_vm.data.created_at))])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.data.created_at))])]), _vm._v(" "), (_vm.signedIn) ? _c('div', [_c('favorite', {
+    attrs: {
+      "reply": _vm.data
+    }
+  })], 1) : _c('div', [_c('span', {
+    staticClass: "glyphicon glyphicon-heart mr-quarter"
+  }), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.data.favoritesCount))])])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.canUpdate),
+      expression: "canUpdate"
+    }],
     staticClass: "panel-footer level"
   }, [_c('button', {
     staticClass: "btn btn-default btn-xs mr-1",
