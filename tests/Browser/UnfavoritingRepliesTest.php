@@ -25,7 +25,7 @@ class UnfavoritingRepliesTest extends DuskTestCase
         $reply->favorite();
         
         $this->browse(function (Browser $browser) use ($thread, $user) {
-        $browser->visit('login')
+            $browser->visit('login')
                     ->type('email', $user->email)
                     ->type('password', 'password')
                     ->press('Login')
@@ -36,5 +36,35 @@ class UnfavoritingRepliesTest extends DuskTestCase
                     ->assertSee($user->name)
                     ->assertDontSee('Favorited ' . $user->name . '\'s reply to \'' . $thread->title . '\'!');
         });
+    }
+
+    /** @test */
+    public function deleting_a_reply_that_has_been_favorited_will_remove_all_of_it_favorites()
+    {
+        $this->be($user = factory(User::class)->create([
+            'password' => bcrypt('password')
+        ]));
+
+        $thread = factory(Thread::class)->create();
+
+        $this->browse(function(Browser $browser) use ($user, $thread) {
+           $browser->visit('login')
+                   ->type('email', $user->email)
+                   ->type('password', 'password')
+                   ->press('Login')
+                   ->assertPathIs('/home')
+                   ->visit('threads/' . $thread->channel->slug . '/' . $thread->id)
+                   ->type('body', 'Hello!')
+                   ->press('Post')
+                   ->press('0')
+                   ->pause(5000)
+                   ->press('Delete')
+                   ->visit('profiles/' . $user->name)
+                   ->pause(10000)
+                   ->assertSee($user->name)
+                   ->assertDontSee('Replied to ' . $thread->title); 
+        });
+
+
     }
 }
