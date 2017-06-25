@@ -14,7 +14,7 @@
 			<div class="level">
 				<h5 class="flex">
 				    by <a :href="'/profiles/' + data.owner.name" v-text="data.owner.name"></a>
-				    <span class="reply-time">{{ data.created_at }}</span>
+				    <span class="reply-time" v-text="ago"></span>
 				</h5>
 					<div v-if="signedIn">
 				    	<favorite :reply="data"></favorite>
@@ -34,6 +34,7 @@
 
 <script>
 	import Favorite from './Favorite.vue';
+	import moment from 'moment';
 
 	export default {
 		props: ['data'],
@@ -51,6 +52,9 @@
 			},
 			canUpdate() {
 				return this.authorize(user => this.data.user_id === user.id);
+			},
+			ago() {
+				return moment(this.data.created_at).parseZone('UTC').fromNow();
 			}
 		},
 		methods: {
