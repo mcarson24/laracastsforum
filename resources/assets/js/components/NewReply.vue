@@ -25,7 +25,6 @@
 
 <script>
 	export default {
-		props: ['endpoint'],
 		data() {
 			return {
 				body: ''
@@ -37,6 +36,9 @@
 			},
 			csrfToken() {
 				return window.App.csrfToken;
+			},
+			endpoint() {
+				return location.pathname + '/replies';
 			}
 		},
 		methods: {

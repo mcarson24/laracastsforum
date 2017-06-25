@@ -27,15 +27,14 @@
                         </div>
 
                         @if ($thread->replies)
-                            <replies :data="{{ $thread->replies }}" 
-                                     @added="repliesCount++" 
+                            <replies @added="repliesCount++" 
                                      @removed="repliesCount--">
                             </replies>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-8 col-md-offset-1">
                                     {{ $replies->links() }}
                                 </div>
-                            </div> 
+                            </div>  --}}
                         @endif
                     </div>
                 </div>
