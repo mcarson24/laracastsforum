@@ -38,12 +38,21 @@ class ViewThreadsTest extends DatabaseTest
     }
 
     /** @test */
-    public function a_user_can_read_replies_associated_with_a_thread()
+    public function a_user_can_find_threads_by_username()
     {
-    	$reply = create(Reply::class, ['thread_id' => $this->thread->id]);
+        $this->signIn(create(User::class, [
+            'name' => 'JohnDoe'
+        ]));
 
-    	$this->get($this->thread->path())
-    		 ->assertSee($reply->body);
+        $threadByJohnDoe = create(Thread::class, [
+            'user_id' => auth()->id()
+        ]);
+
+        $threadNotByJohnDoe = create(Thread::class);
+
+        $this->get('threads?by=JohnDoe')
+             ->assertSee($threadByJohnDoe->title)
+             ->assertDontSee($threadNotByJohnDoe->title);
     }
 
     /** @test */
@@ -60,24 +69,6 @@ class ViewThreadsTest extends DatabaseTest
         $this->get('threads' . '/' . $channel->slug)
              ->assertSee($threadInChannel->title)
              ->assertDontSee($threadNotInChannel->title);
-    }
-
-    /** @test */
-    public function a_user_can_find_threads_by_username()
-    {
-        $this->signIn(create(User::class, [
-            'name' => 'JohnDoe'
-        ]));
-
-        $threadByJohnDoe = create(Thread::class, [
-            'user_id' => auth()->id()
-        ]);
-
-        $threadNotByJohnDoe = create(Thread::class);
-
-        $this->get('threads?by=JohnDoe')
-             ->assertSee($threadByJohnDoe->title)
-             ->assertDontSee($threadNotByJohnDoe->title);
     }
 
     /** @test */
@@ -100,8 +91,20 @@ class ViewThreadsTest extends DatabaseTest
         // When I filter threads by popularity
         $response = $this->getJson('threads?popular=1')->json();
 
-        // Then they should be returned from mosr replied to to least replied to.
+        // Then they should be returned from most replied to to least replied to.
         $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
+    }
+
+    /** @test */
+    public function a_user_can_filter_unanswered_threads()
+    {
+        $answeredThread = create(Thread::class);
+        $replies = create(Reply::class, ['thread_id' => $answeredThread->id]);
+
+        $response = $this->getJson('threads?unanswered=1')->json();
+
+        $this->assertCount(1, $response);
+        $this->assertEquals(1, $answeredThread->fresh()->replies_count);
     }
 
     /** @test */
@@ -112,7 +115,7 @@ class ViewThreadsTest extends DatabaseTest
 
         $response = $this->getJson($thread->path() . '/replies')->json();
         
-        $this->assertCount(1, $response['data']);
+        $this->assertCount(3, $response['data']);
         $this->assertEquals(3, $response['total']);
     }
 }

@@ -19,6 +19,7 @@ class CreateThreadsTable extends Migration
             $table->foreign('user_id')
                   ->references('id')
                   ->on('users');
+            $table->integer('replies_count')->default(0);
             $table->string('title');
             $table->text('body');
             $table->integer('channel_id')->unsigned();

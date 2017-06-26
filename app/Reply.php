@@ -15,6 +15,15 @@ class Reply extends Model
 
     protected $appends = ['favoritesCount', 'isFavorited'];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($reply) {
+            $reply->thread->increment('replies_count');
+        });
+    }
+
 	/**
 	 * A reply was written by a single user.
 	 * 
