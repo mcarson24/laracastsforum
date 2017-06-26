@@ -27,6 +27,7 @@
                     @if (auth()->check())
                         <li><a href="{{ route('threads.index') }}?by={{ auth()->user()->name }}">My Threads</a></li>
                     @endif
+                    <li><a href="{{ route('threads.index')}}?unanswered=1">Unanswered</a></li>
                   </ul>
                 </li>
                 <li><a href="{{ action('ThreadsController@create') }}">New Thread</a></li>
