@@ -14,14 +14,16 @@ class ParticipatesInThreadsTest extends DatabaseTest
     /** @test */
     public function an_authenticated_user_may_participate_in_form_threads()
     {
-        $this->signIn($user = create(User::class));
+        $this->signIn();
         $thread = create(Thread::class);
 
         $reply = make(Reply::class);
         $this->post($thread->path() . '/replies', $reply->toArray());
 
-        $this->get($thread->path())
-        	 ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', [
+            'thread_id' => $thread->id,
+            'body'      => $reply->body
+        ]);
     }
 
     /** @test */
