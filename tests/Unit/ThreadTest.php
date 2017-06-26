@@ -61,8 +61,6 @@ class ThreadTest extends DatabaseTest
     /** @test */
     public function a_thread_belongs_to_a_channel()
     {
-        $thread = create(Thread::class);
-
-        $this->assertInstanceOf('App\Channel', $thread->channel);
+        $this->assertInstanceOf('App\Channel', $this->thread->channel);
     }
 }

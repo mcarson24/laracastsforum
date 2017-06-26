@@ -14,14 +14,16 @@ class ParticipatesInThreadsTest extends DatabaseTest
     /** @test */
     public function an_authenticated_user_may_participate_in_form_threads()
     {
-        $this->signIn($user = create(User::class));
+        $this->signIn();
         $thread = create(Thread::class);
 
         $reply = make(Reply::class);
         $this->post($thread->path() . '/replies', $reply->toArray());
 
-        $this->get($thread->path())
-        	 ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', [
+            'thread_id' => $thread->id,
+            'body'      => $reply->body
+        ]);
     }
 
     /** @test */
@@ -74,12 +76,14 @@ class ParticipatesInThreadsTest extends DatabaseTest
         $reply = create(Reply::class);
         $this->signIn($reply->owner);
 
+        $this->assertEquals(1, $reply->thread->replies_count);
         $this->delete("replies/{$reply->id}")
              ->assertStatus(302);
+        $this->assertEquals(0, $reply->thread->fresh()->replies_count);
         $this->assertDatabaseMissing('replies', [
                 'id'    => $reply->id,
                 'body'  => $reply->body
-            ]);
+        ]);
     }
 
     /** @test */
