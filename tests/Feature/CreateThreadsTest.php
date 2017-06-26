@@ -112,7 +112,7 @@ class CreateThreadsTest extends DatabaseTest
     }
 
     /** @test */
-    public function a_threads_replies_are_also_delteted_when_a_thread_is_deleted()
+    public function a_threads_replies_are_also_deleted_when_a_thread_is_deleted()
     {
         $this->signIn();
 
