@@ -34,4 +34,8 @@ Route::patch('replies/{reply}', 'RepliesController@update');
 Route::delete('replies/{reply}', 'RepliesController@destroy');
 Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');	
 
+Route::post('threads/{channel}/{thread}/subscriptions', 'ThreadsSubscriptionsController@store')->middleware('auth');
+
 Route::get('profiles/{user}', 'ProfilesController@show');
+
+
