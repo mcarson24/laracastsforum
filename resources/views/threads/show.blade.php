@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <p>This discussion was created {{ $thread->created_at->diffForHumans() }} by <a href="#">{{ $thread->creator->name }}</a>, it currently has <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.</p>
+                                <p>This discussion was created {{ $thread->created_at->diffForHumans() }} by <a href="{{ action('ProfilesController@show', $thread->creator) }}">{{ $thread->creator->name }}</a>, it currently has <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.</p>
                                 <p>
                                     <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
                                 </p>
