@@ -2,7 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Notifications\ThreadWasUpdated;
 use App\Thread;
+use App\User;
+use Illuminate\Support\Facades\Notification;
 use Tests\DatabaseTest;
 
 class ThreadTest extends DatabaseTest
@@ -56,6 +59,22 @@ class ThreadTest extends DatabaseTest
         ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    /** @test */
+    public function a_thread_notifies_all_registerd_subscribers_when_a_new_reply_is_added()
+    {
+        Notification::fake();
+
+        $this->signIn();
+
+        $this->thread->subscribe()
+                     ->addReply([
+                        'body' => 'Here ya go boo.',
+                        'user_id' => create(User::class)->id
+                    ]);
+
+        Notification::assertSentTo(auth()->user(), ThreadWasUpdated::class);
     }
 
     /** @test */
