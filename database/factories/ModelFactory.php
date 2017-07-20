@@ -53,6 +53,17 @@ $factory->define(App\Reply::class, function (Faker\Generator $faker) {
 });
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(Illuminate\Notifications\DatabaseNotification::class, function (Faker\Generator $faker) {
+    return [
+        'id'                => \Ramsey\Uuid\Uuid::uuid4()->toString(),
+        'type'              => 'App\Notifications\ThreadWasUpdated',
+        'notifiable_id'     => auth()->id() ?: factory(App\User::class)->create()->id,
+        'notifiable_type'   => 'App\User',
+        'data'              => ['foo' => 'bar']
+    ];
+});
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Channel::class, function (Faker\Generator $faker) {
 
     $name = $faker->word;
