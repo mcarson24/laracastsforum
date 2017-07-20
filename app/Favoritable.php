@@ -24,7 +24,7 @@ trait Favoritable
     /**
      * Favorite this resource for the authenticated user.
      * 
-     * @return [type] [description]
+     * @return App\Favorite
      */
     public function favorite()
     {
@@ -39,7 +39,7 @@ trait Favoritable
     /**
      * Unfavorite the resource for the authenticated user.
      * 
-     * @return [type] [description]
+     * @return null
      */
     public function unfavorite()
     {
