@@ -65,8 +65,8 @@ class ParticipatesInThreadsTest extends DatabaseTest
         // As an authenticated user, attempt to delete
         // another user's reply.
         
-        $this->signIn()
-             ->delete("replies/{$reply->id}")
+        $this->signIn();
+        $this->delete("replies/{$reply->id}")
              ->assertStatus(403);
     }
 
@@ -114,8 +114,8 @@ class ParticipatesInThreadsTest extends DatabaseTest
         // As an authenticated user, attempt to delete
         // another user's reply.
         
-        $this->signIn()
-             ->patch("replies/{$reply->id}")
+        $this->signIn();
+        $this->patch("replies/{$reply->id}")
              ->assertStatus(403);
     }
 }
