@@ -13,6 +13,8 @@ class Thread extends Model
 
     protected $with = ['creator', 'channel'];
 
+    protected $appends = ['isSubscribedTo'];
+
     /**
      * @return void
      */
@@ -75,6 +77,18 @@ class Thread extends Model
     public function subscriptions()
     {
         return $this->hasMany(ThreadSubscriptions::class);
+    }
+
+    /**
+     * Determine if the thread subscribed to by the current.
+     * 
+     * @return bool
+     */
+    public function getIsSubscribedToAttribute()
+    {
+        return $this->subscriptions()
+                    ->where('user_id', auth()->id())
+                    ->exists();
     }
 
     /**	

@@ -27,4 +27,19 @@ class SubscribeToThreadsTest extends DatabaseTest
         // then a notification is prepared for the user.
     	$this->assertCount(1, $thread->subscriptions);
     }
+
+    /** @test */
+    public function a_user_can_unsubscribe_from_threads()
+    {
+        $thread = create(Thread::class);
+
+        $this->signIn();
+
+        $thread->subscribe();
+
+        $this->delete("{$thread->path()}/subscriptions");
+
+        $this->assertCount(0, $thread->subscriptions);
+        $this->assertFalse($thread->isSubscribedTo);
+    }
 }

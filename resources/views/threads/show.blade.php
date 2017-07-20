@@ -30,11 +30,6 @@
                             <replies @added="repliesCount++" 
                                      @removed="repliesCount--">
                             </replies>
-                            {{-- <div class="row">
-                                <div class="col-md-8 col-md-offset-1">
-                                    {{ $replies->links() }}
-                                </div>
-                            </div>  --}}
                         @endif
                     </div>
                 </div>
@@ -43,6 +38,9 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <p>This discussion was created {{ $thread->created_at->diffForHumans() }} by <a href="#">{{ $thread->creator->name }}</a>, it currently has <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.</p>
+                                <p>
+                                    <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
+                                </p>
                             </div>
                         </div>
                     </div>
