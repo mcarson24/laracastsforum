@@ -2,6 +2,7 @@
 
 namespace App\Inspections;
 
+use App\Inspections\KeyHeldDown;
 use App\Inspections\InvalidKeywords;
 
 class Spam

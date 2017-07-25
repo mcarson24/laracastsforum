@@ -6,6 +6,8 @@ use App\User;
 use App\Reply;
 use App\Thread;
 use Tests\DatabaseTest;
+use League\Flysystem\Exception;
+use App\Inspections\SpamDetectionException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ParticipatesInThreadsTest extends DatabaseTest
@@ -131,11 +133,8 @@ class ParticipatesInThreadsTest extends DatabaseTest
 
         try {
             $this->post("{$thread->path()}/replies", $reply->toArray());
-        } catch (\Exception $e) {
+        } catch (SpamDetectionException $e) {
             return;
         }
-
-        $this->fail('Spam replies should not be saved.');
-
     }
 }

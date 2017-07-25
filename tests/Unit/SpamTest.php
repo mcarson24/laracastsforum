@@ -28,7 +28,6 @@ class SpamTest extends TestCase
     public function it_checks_for_keys_being_held_down()
     {
         $spam = new Spam;
-
         try {
 	        $spam->detect('Hellooooooooooooooo wooooooooooooooooooooooooooooooorld!!!!!!!!!!!!!!!!!!!!!!!!!');
         } catch (\Exception $e) {

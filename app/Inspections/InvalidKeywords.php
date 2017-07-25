@@ -2,6 +2,8 @@
 
 namespace App\Inspections;
 
+use App\Inspections\SpamDetectionException;
+
 class InvalidKeywords implements SpamFilter
 {
 	protected $keywords = [
@@ -20,7 +22,7 @@ class InvalidKeywords implements SpamFilter
 		{
 			if(stripos($body, $keyword) !== false)
 			{
-				throw new \Exception('No spam please!');
+				throw new SpamDetectionException('No spam please!');
 			}
 		}
 	}
