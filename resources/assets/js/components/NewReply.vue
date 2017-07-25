@@ -49,6 +49,8 @@
 					this.body = '';
 					flash('Your reply has been added!');
 					this.$emit('created', data);
+				}).catch(errors => {
+					flash(errors.response.data, 'danger');
 				});
 
 
