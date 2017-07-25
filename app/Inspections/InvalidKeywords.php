@@ -8,6 +8,12 @@ class InvalidKeywords implements SpamFilter
 			'yahoo customer support'
 	];
 
+	/**
+	 * Detect this spam rule.
+	 * 
+	 * @param  string $body 
+	 * @return bool       
+	 */
 	public function detect($body)
 	{
 		foreach ($this->keywords as $keyword) 
