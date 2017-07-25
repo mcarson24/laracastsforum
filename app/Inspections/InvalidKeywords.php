@@ -22,7 +22,7 @@ class InvalidKeywords implements SpamFilter
 		{
 			if(stripos($body, $keyword) !== false)
 			{
-				throw new SpamDetectionException('No spam please!');
+				throw new \Exception('No spam please!');
 			}
 		}
 	}

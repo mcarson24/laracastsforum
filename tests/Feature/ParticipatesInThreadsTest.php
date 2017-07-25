@@ -131,10 +131,7 @@ class ParticipatesInThreadsTest extends DatabaseTest
             'body' => 'Yahoo Customer Support'
         ]);
 
-        try {
-            $this->post("{$thread->path()}/replies", $reply->toArray());
-        } catch (SpamDetectionException $e) {
-            return;
-        }
+        $this->post("{$thread->path()}/replies", $reply->toArray())
+             ->assertStatus(422);
     }
 }

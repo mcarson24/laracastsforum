@@ -16,7 +16,7 @@ class KeyHeldDown implements SpamFilter
 	{
 		if (preg_match('/(.)\\1{4,}/', $body))
 		{
-			throw new SpamDetectionException('No spam please!');
+			throw new \Exception('No spam please!');
 		}
 	}
 }
