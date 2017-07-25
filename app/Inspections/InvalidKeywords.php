@@ -5,7 +5,7 @@ namespace App\Inspections;
 class InvalidKeywords implements SpamFilter
 {
 	protected $keywords = [
-			'yahoo customer support'
+		'yahoo customer support'
 	];
 
 	/**
@@ -20,7 +20,7 @@ class InvalidKeywords implements SpamFilter
 		{
 			if(stripos($body, $keyword) !== false)
 			{
-				throw new \Exception;
+				throw new \Exception('No spam please!');
 			}
 		}
 	}
