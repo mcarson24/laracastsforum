@@ -37,8 +37,7 @@
                                           id="body" 
                                           class="form-control {{ $errors->has('body') ? 'error' : '' }}" 
                                           rows="10"
-                                          required>
-                                    {{ old('body') }}
+                                          required>{{ old('body') }}
                                 </textarea>
                         	</div>
                         	<div class="form-group">

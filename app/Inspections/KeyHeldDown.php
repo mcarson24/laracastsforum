@@ -2,7 +2,7 @@
 
 namespace App\Inspections;
 
-use Exception;
+use App\Inspections\SpamDetectionException;
 
 class KeyHeldDown implements SpamFilter
 {
@@ -16,7 +16,7 @@ class KeyHeldDown implements SpamFilter
 	{
 		if (preg_match('/(.)\\1{4,}/', $body))
 		{
-			throw new Exception('No spam please!');
+			throw new SpamDetectionException('No spam please!');
 		}
 	}
 }
