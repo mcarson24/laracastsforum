@@ -50,10 +50,9 @@
 					flash('Your reply has been added!');
 					this.$emit('created', data);
 				}).catch(errors => {
+					console.log(errors.response);
 					flash(errors.response.data, 'danger');
 				});
-
-
 			}
 		}
 	}

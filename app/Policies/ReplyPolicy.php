@@ -28,8 +28,11 @@ class ReplyPolicy
      * @return mixed
      */
     public function create(User $user)
-    {
-        //
+    {   
+        $lastReply = $user->fresh()->lastReply;
+        
+        if (!$lastReply) return true;
+        return ! $lastReply->wasJustPublished();
     }
 
     /**

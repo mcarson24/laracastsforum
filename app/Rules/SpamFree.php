@@ -3,7 +3,6 @@
 namespace App\Rules;
 
 use App\Inspections\Spam;
-use App\Inspections\SpamDetectionException;
 
 class SpamFree
 {
@@ -11,7 +10,7 @@ class SpamFree
 	{
 		try {
 			return ! resolve(Spam::class)->detect($value);
-		} catch (SpamDetectionException $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 	}

@@ -134,4 +134,21 @@ class ParticipatesInThreadsTest extends DatabaseTest
         $this->post("{$thread->path()}/replies", $reply->toArray())
              ->assertStatus(422);
     }
+
+    /** @test */
+    public function users_can_only_reply_once_every_minute_maximum()
+    {
+        $user = $this->signIn();
+        $thread = create(Thread::class);
+        $reply = make(Reply::class, [
+            'body' => 'My innocent reply.',
+            'user_id' => $user->id,
+            'created_at' => \Carbon\Carbon::parse('January 22, 2013')
+        ]);
+
+        $this->post("{$thread->path()}/replies", $reply->toArray())
+             ->assertStatus(200);
+        $this->post("{$thread->path()}/replies", $reply->toArray())
+             ->assertStatus(422);
+    }
 }

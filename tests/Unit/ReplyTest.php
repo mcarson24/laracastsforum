@@ -17,4 +17,16 @@ class ReplyTest extends DatabaseTest
         $this->assertInstanceOf('App\User', $reply->owner);
         $this->assertNotNull($reply->owner());
     }
+
+    /** @test */
+    public function a_reply_knows_if_it_was_just_created_within_the_last_minute()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertTrue($reply->wasJustPublished());
+
+        $reply->created_at =  \Carbon\Carbon::now()->subMonth();
+
+        $this->assertFalse($reply->wasJustPublished());
+    }
 }

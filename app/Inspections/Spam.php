@@ -2,14 +2,15 @@
 
 namespace App\Inspections;
 
-use App\Inspections\KeyHeldDown;
 use App\Inspections\InvalidKeywords;
+use App\Inspections\KeyHeldDown;
+use App\Inspections\TooManyRequests;
 
 class Spam
 {
 	protected $inspections = [
 		InvalidKeywords::class,
-		KeyHeldDown::class
+		KeyHeldDown::class,
 	];
 
 	/**
