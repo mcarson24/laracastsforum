@@ -114,6 +114,13 @@ class Thread extends Model
         return $this->belongsTo(Channel::class);
     }
 
+    public function hasUpdatesForUser()
+    {
+        if (auth()->guest()) return;
+        
+        return $this->updated_at > cache(auth()->user()->visitedThreadCacheKey($this));
+    }
+
     /**
      * Return the url path of the thread.
      * 

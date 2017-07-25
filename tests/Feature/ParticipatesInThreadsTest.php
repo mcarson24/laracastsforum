@@ -118,4 +118,24 @@ class ParticipatesInThreadsTest extends DatabaseTest
         $this->patch("replies/{$reply->id}")
              ->assertStatus(403);
     }
+
+    /** @test */
+    public function replies_that_contain_spam_are_not_created()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class);
+        $reply = make(Reply::class, [
+            'body' => 'Yahoo Customer Support'
+        ]);
+
+        try {
+            $this->post("{$thread->path()}/replies", $reply->toArray());
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->fail('Spam replies should not be saved.');
+
+    }
 }

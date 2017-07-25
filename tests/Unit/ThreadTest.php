@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Notifications\ThreadWasUpdated;
-use App\Thread;
 use App\User;
-use Illuminate\Support\Facades\Notification;
+use App\Thread;
 use Tests\DatabaseTest;
+use App\Notifications\ThreadWasUpdated;
+use Illuminate\Support\Facades\Notification;
 
 class ThreadTest extends DatabaseTest
 {
@@ -119,5 +119,18 @@ class ThreadTest extends DatabaseTest
         $thread->subscribe();
 
         $this->assertTrue($thread->isSubscribedTo);
+    }
+
+    /** @test */
+    public function a_thread_can_check_if_the_authenticated_user_has_read_all_replies()
+    {
+        $user = $this->signIn();
+        $thread = create(Thread::class);
+
+        $this->assertTrue($thread->hasUpdatesForUser());
+
+        $user->read($thread);
+
+        $this->assertFalse($thread->hasUpdatesForUser());
     }
 }
