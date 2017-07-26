@@ -3,8 +3,9 @@
 namespace Tests\Unit;
 
 use App\Reply;
-use Tests\DatabaseTest;
+use App\Thread;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DatabaseTest;
 
 class ReplyTest extends DatabaseTest
 {
@@ -16,6 +17,15 @@ class ReplyTest extends DatabaseTest
 
         $this->assertInstanceOf('App\User', $reply->owner);
         $this->assertNotNull($reply->owner());
+    }
+
+    /** @test */
+    public function it_knows_its_correct_path()
+    {
+        $thread = create(Thread::class);
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $this->assertEquals($thread->path() . '#reply-1', $reply->path());
     }
 
     /** @test */
