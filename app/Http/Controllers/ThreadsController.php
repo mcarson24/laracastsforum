@@ -17,9 +17,11 @@ class ThreadsController extends Controller
     }
 
     /**
-     * Show an index of all the threads.
+     * Display a listing of Threads.
      * 
-     * @param  Channel $channel 
+     * @param  Channel       $channel 
+     * @param  ThreadFilters $filters 
+     * @return Illuminate\Http\Response                
      */
     public function index(Channel $channel, ThreadFilters $filters)
     {
@@ -82,29 +84,6 @@ class ThreadsController extends Controller
         }
 
         return view('threads.show', compact('thread'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Thread $thread)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Thread $thread)
-    {
-        //
     }
 
     /**

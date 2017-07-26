@@ -80,7 +80,7 @@ class ParticipatesInThreadsTest extends DatabaseTest
 
         $this->assertEquals(1, $reply->thread->replies_count);
         $this->delete("replies/{$reply->id}")
-             ->assertStatus(302);
+             ->assertStatus(200);
         $this->assertEquals(0, $reply->thread->fresh()->replies_count);
         $this->assertDatabaseMissing('replies', [
                 'id'    => $reply->id,

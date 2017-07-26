@@ -36,12 +36,10 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
-    	$reply = $thread->addReply([
+    	return $thread->addReply([
     		'body' 		=> request('body'),
     		'user_id'	=> auth()->id()
 		])->load('owner');
-
-        return $reply;
     }
 
     /**
@@ -52,15 +50,14 @@ class RepliesController extends Controller
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
-        try {
-            $this->validate(request(), [
-                'body' => 'required|spamfree'
-            ]);
+        
+        $this->validate(request(), [
+            'body' => 'required|spamfree'
+        ]);
 
-            $reply->update(request(['body']));
-        } catch (\Exception $e) {
-            return response('Sorry, your reply could not be saved at this time.', 422); 
-        }
+        $reply->update(request(['body']));
+        
+        return response('Sorry, your reply could not be saved at this time.', 422); 
     }
 
     /**
@@ -80,7 +77,5 @@ class RepliesController extends Controller
         {
             return response(['status', 'Reply has been deleted.']);
         }
-
-    	return back();
     }
 }

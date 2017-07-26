@@ -11,16 +11,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class NotifyMentionedUsers
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param  ThreadHasNewReply  $event
@@ -28,9 +18,8 @@ class NotifyMentionedUsers
      */
     public function handle(ThreadHasNewReply $event)
     {
-        collect($event->reply->mentionedUsers())->map(function($name) {
-            return User::whereName($name)->first();
-        })->filter()->each(function($user) use ($event) {
+        User::whereIn('name', $event->reply->mentionedUsers())
+        ->get()->each(function($user) use ($event) {
             $user->notify(new YouWereMentioned($event->reply));
         });
     }

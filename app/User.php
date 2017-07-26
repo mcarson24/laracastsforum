@@ -2,10 +2,9 @@
 
 namespace App;
 
-use App\Activity;
 use Carbon\Carbon;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -49,11 +48,21 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class)->latest();
     }
 
+    /**
+     * A user can have many different activities.
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function activity()
     {
         return $this->hasMany(Activity::class);
     }
 
+    /**
+     * Store in the cash when this user last read a thread.
+     * 
+     * @param  Thread $thread [description]
+     */
     public function read(Thread $thread)
     {
         cache()->forever(
@@ -62,11 +71,23 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * Return the Cache Key for a given thread.
+     * 
+     * @param  Thread $thread 
+     * @return string         
+     */
     public function visitedThreadCacheKey(Thread $thread)
     {
         return sprintf("users.%s.visits.%s", $this->id, $thread->id);
     }
 
+
+    /**
+     * Returns the last reply that a users has left.
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function lastReply()
     {
         return $this->hasOne(Reply::class)->latest();

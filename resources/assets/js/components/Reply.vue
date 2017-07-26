@@ -2,11 +2,13 @@
 	<div>
 		<div :id="'reply-' + this.id" class="panel-heading">
 			<div v-if="editing">
-				<div class="form-group">
-					<textarea class="form-control" v-model="body"></textarea>
-				</div>
-				<button class="btn btn-default btn-xs" @click="editing = false">Cancel</button>
-				<button class="btn btn-link btn-xs" @click="update">Update</button>
+				<form @submit="update">
+					<div class="form-group">
+						<textarea class="form-control" v-model="body" required></textarea>
+					</div>
+					<button class="btn btn-default btn-xs" type="button" @click="editing = false">Cancel</button>
+					<button class="btn btn-default btn-xs">Update</button>
+				</form>
 			</div>
 			<div v-else v-text="body"></div>
 		</div>
