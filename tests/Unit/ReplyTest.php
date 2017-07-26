@@ -31,7 +31,7 @@ class ReplyTest extends DatabaseTest
     /** @test */
     public function a_reply_know_which_users_where_mentioned_in_its_body()
     {
-        $reply = create(Reply::class, ['body' => '@JaneDoe @JohnDoe are cool people right @SteveDoe ?']);
+        $reply = new Reply(['body' => '@JaneDoe @JohnDoe are cool people right @SteveDoe?']);
 
         $this->assertEquals([
             'JaneDoe',
@@ -50,5 +50,16 @@ class ReplyTest extends DatabaseTest
         $reply->created_at =  \Carbon\Carbon::now()->subMonth();
 
         $this->assertFalse($reply->wasJustPublished());
+    }
+
+    /** @test */
+    public function it_wraps_mentioned_user_names_in_the_body_in_anchor_tags()
+    {
+        $reply = new Reply(['body' => 'Hello @Jane-Doe?']);
+
+        $this->assertEquals(
+            'Hello <a href="/profiles/Jane-Doe">@Jane-Doe</a>?', 
+            $reply->body
+        );
     }
 }
