@@ -7,6 +7,7 @@ use App\Thread;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\CreatePostRequest;
 
 class RepliesController extends Controller
 {
@@ -28,31 +29,19 @@ class RepliesController extends Controller
     }
 
 	/**
-	 * Store a new reply in the database.
+     * Store a new reply in the database.
      * 
-	 * @param         $channelId 
-     * @param  Thread $thread      
+     * @param  integer              $channelId 
+     * @param  Thread               $thread    
+     * @param  CreatePostRequest    $form      
+     * @return Symfony\Component\HttpFoundation\RedirectResponse                   
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
-        if (Gate::denies('create', new Reply))
-        {
-            return response('Woah! Slow done there a bit. One post per minute.', 429);
-        }
-
-        try {
-        	$this->validate(request(), [
-                'body' => 'required|spamfree'
-            ]);
-
-        	$reply = $thread->addReply([
-        		'body' 		=> request('body'),
-        		'user_id'	=> auth()->id()
-    		]);
-        } catch (\Exception $e) {
-            return response('Sorry, your reply could not be saved at this time.', 422);
-        }
-        return $reply->load('owner');
+    	return $thread->addReply([
+    		'body' 		=> request('body'),
+    		'user_id'	=> auth()->id()
+		])->load('owner');
     }
 
     /**
