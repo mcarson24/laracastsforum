@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Reply;
 use App\Thread;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use App\Notifications\YouWereMentioned;
 use App\Http\Requests\CreatePostRequest;
 
 class RepliesController extends Controller
