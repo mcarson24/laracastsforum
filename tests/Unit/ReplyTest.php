@@ -29,6 +29,18 @@ class ReplyTest extends DatabaseTest
     }
 
     /** @test */
+    public function a_reply_know_which_users_where_mentioned_in_its_body()
+    {
+        $reply = create(Reply::class, ['body' => '@JaneDoe @JohnDoe are cool people right @SteveDoe ?']);
+
+        $this->assertEquals([
+            'JaneDoe',
+            'JohnDoe',
+            'SteveDoe'
+        ], $reply->mentionedUsers());
+    }
+
+    /** @test */
     public function a_reply_knows_if_it_was_just_created_within_the_last_minute()
     {
         $reply = create(Reply::class);

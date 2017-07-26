@@ -5,10 +5,11 @@ namespace App\Events;
 use App\Reply;
 use App\Thread;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
 
 class ThreadHasNewReply
 {
-    use SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $thread;
     public $reply;

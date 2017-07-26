@@ -45,21 +45,6 @@ class RepliesController extends Controller
     		'user_id'	=> auth()->id()
 		])->load('owner');
 
-        // Inspect $reply->body for username mentions
-        preg_match_all('/\@([^\s]+)/', $reply->body, $matches);
-        $names = $matches[1];
-        
-        foreach ($names as $name) 
-        {
-            $user = User::whereName($name)->first();
-
-            if ($user)
-            {
-                $user->notify(new YouWereMentioned($reply));
-            }
-        }
-        // For each mentioned user, notify them.
-
         return $reply;
     }
 
