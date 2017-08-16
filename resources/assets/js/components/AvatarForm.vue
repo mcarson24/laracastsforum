@@ -1,22 +1,25 @@
 <template>
 	<div>
-		<h1>
-			{{ profileUser.name }}
-			<small>joined us {{ joined }}</small>
-		</h1>
+		<div class="level">
+			<img :src="avatar" :alt="altText" width="75" height="75" class="mr-1 mb-1 br-5">
+			<h1>
+				{{ profileUser.name }}
+				<small>joined us {{ memberSince }}</small>
+		 	</h1>
+		</div>
 		<form v-if="canUpdateAvatar" enctype="multipart/form-data" method="POST">
 			<div class="form-group">
-				<input type="file" name="avatar" accept="image/*" @change="onChange">
+				<image-upload name="avatar" @loaded="onLoad"></image-upload>
 			</div>
 		</form>
-
-		<img :src="avatar" :alt="altText" width="75" height="75" class="br-5">
 	</div>
 </template>
 
 <script>
 	import moment from 'moment';
+	import ImageUpload from './ImageUpload';
 	export default {
+		components: { ImageUpload },
 		props: ['profileUser'],
 		data() {
 			return {
@@ -24,20 +27,11 @@
 			}
 		},
 		methods: {
-			onChange(e) {
-				if (!e.target.files.length) return;
-
-				let avatar = e.target.files[0];
-				let reader = new FileReader();
-
-				reader.readAsDataURL(avatar);
-
-				reader.onload = e => {
-					this.avatar = e.target.result;
-				};
+			onLoad(avatar) {
+				this.avatar = avatar.src;
 
 				// Persist to server
-				this.persist(avatar);
+				this.persist(avatar.file);
 			},
 			persist(avatar) {
 				let data = new FormData();
@@ -54,7 +48,7 @@
 			altText() {
 				return `${this.profileUser.name}'s avatar`;
 			},
-			joined() {
+			memberSince() {
 				return moment(this.profileUser.created_at).parseZone('UTC').fromNow();
 			}
 		}

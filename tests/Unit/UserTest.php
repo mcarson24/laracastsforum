@@ -22,7 +22,7 @@ class UserTest extends DatabaseTest
     {
         $user = create(User::class, ['avatar_path' => 'avatars/me.jpg']);
 
-        $this->assertEquals('http://forum.dev/avatars/me.jpg', $user->avatar());
+        $this->assertEquals(asset('avatars/me.jpg'), $user->avatar_path);
     }
 
     /** @test */
@@ -30,6 +30,6 @@ class UserTest extends DatabaseTest
     {
         $user = create(User::class);
 
-        $this->assertEquals('http://forum.dev/avatars/default.png', $user->avatar());
+        $this->assertEquals(asset('avatars/default.png'), $user->avatar_path);
     }
 }

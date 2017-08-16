@@ -41,6 +41,10 @@
             margin-right: 1em;
         }
 
+        .mb-1 {
+            margin-bottom: 1em;
+        }
+
         .mr-top-25 {
             margin-top: 25px;
         }
