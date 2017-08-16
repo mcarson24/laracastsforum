@@ -10,6 +10,17 @@
 						{{ $profileUser->name }}
 						<small>joined us {{ $profileUser->created_at->diffForHumans() }}</small>
 					</h1>
+					@can('update', $profileUser)
+						<form method="POST" action="{{ action('Api\UserAvatarController@store', $profileUser->id) }}" enctype="multipart/form-data">
+							{{ csrf_field() }}
+							<div class="form-group">
+								<input type="file" name="avatar">
+							</div>
+							<button class="btn btn-default">Add Avatar</button>
+						</form>
+					@endcan
+
+					<img src="{{ asset($profileUser->avatar_path) }}" alt="{{ $profileUser->name }}'s avatar" width="75" height="75">
 				</div>
 
 				@forelse ($activities as $date => $dayActivities)
