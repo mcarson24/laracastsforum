@@ -30,6 +30,6 @@ class UserTest extends DatabaseTest
     {
         $user = create(User::class);
 
-        $this->assertEquals('http://forum.dev/avatars/default.jpg', $user->avatar());
+        $this->assertEquals('http://forum.dev/avatars/default.png', $user->avatar());
     }
 }
