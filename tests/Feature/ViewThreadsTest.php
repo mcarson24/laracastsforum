@@ -88,11 +88,12 @@ class ViewThreadsTest extends DatabaseTest
 
         $threadWithNoReplies = $this->thread;
 
+
         // When I filter threads by popularity
         $response = $this->getJson('threads?popular=1')->json();
 
         // Then they should be returned from most replied to to least replied to.
-        $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
+        $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
     }
 
     /** @test */
@@ -103,7 +104,7 @@ class ViewThreadsTest extends DatabaseTest
 
         $response = $this->getJson('threads?unanswered=1')->json();
 
-        $this->assertCount(1, $response);
+        $this->assertCount(1, $response['data']);
         $this->assertEquals(1, $answeredThread->fresh()->replies_count);
     }
 
