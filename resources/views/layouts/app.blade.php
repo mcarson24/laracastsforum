@@ -45,6 +45,10 @@
             margin-top: 25px;
         }
 
+        .br-5 {
+            border-radius: 5px;
+        }
+
         [v-cloak] {
             display: none;
         }

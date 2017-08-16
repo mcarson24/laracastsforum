@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Store in the cash when this user last read a thread.
+     * Store in the cache when this user last read a thread.
      * 
      * @param  Thread $thread [description]
      */
@@ -91,5 +91,15 @@ class User extends Authenticatable
     public function lastReply()
     {
         return $this->hasOne(Reply::class)->latest();
+    }
+
+    /**
+     * Return a path to the user's avatar.
+     * 
+     * @return string
+     */
+    public function avatar()
+    {
+        return asset($this->avatar_path ?? 'avatars/default.jpg');
     }
 }

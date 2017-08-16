@@ -12,6 +12,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="level">
+                                <img src="{{ $thread->creator->avatar() }}" alt="{{ $thread->creator->name }}'s avatar" height="75" width="75" class="mr-1 br-5">
                                 <span class="flex">
                                     {{ $thread->title }} posted by: <span class="creator-name"><a href="{{ action('ProfilesController@show', $thread->creator) }}">{{ $thread->creator->name }}</a></span>
                                 </span>

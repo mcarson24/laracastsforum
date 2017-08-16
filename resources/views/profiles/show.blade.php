@@ -20,7 +20,7 @@
 						</form>
 					@endcan
 
-					<img src="{{ asset($profileUser->avatar_path) }}" alt="{{ $profileUser->name }}'s avatar" width="75" height="75">
+					<img src="{{ $profileUser->avatar() }}" alt="{{ $profileUser->name }}'s avatar" width="75" height="75" class="br-5">
 				</div>
 
 				@forelse ($activities as $date => $dayActivities)
