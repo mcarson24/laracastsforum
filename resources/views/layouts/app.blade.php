@@ -44,6 +44,10 @@
         .mr-top-25 {
             margin-top: 25px;
         }
+        
+        .list-group-item {
+            border: none;
+        }
 
         [v-cloak] {
             display: none;
