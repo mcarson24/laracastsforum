@@ -16,4 +16,20 @@ class UserTest extends DatabaseTest
 
         $this->assertEquals($reply->id, $user->lastReply->id);
     }
+
+    /** @test */
+    public function a_user_knows_its_avatar_path()
+    {
+        $user = create(User::class, ['avatar_path' => 'avatars/me.jpg']);
+
+        $this->assertEquals(asset('avatars/me.jpg'), $user->avatar_path);
+    }
+
+    /** @test */
+    public function a_user_without_an_avatar_returns_a_placeholder_image()
+    {
+        $user = create(User::class);
+
+        $this->assertEquals(asset('avatars/default.png'), $user->avatar_path);
+    }
 }

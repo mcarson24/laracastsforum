@@ -41,12 +41,20 @@
             margin-right: 1em;
         }
 
+        .mb-1 {
+            margin-bottom: 1em;
+        }
+
         .mr-top-25 {
             margin-top: 25px;
         }
         
         .list-group-item {
             border: none;
+        }
+
+        .br-5 {
+            border-radius: 5px;
         }
 
         [v-cloak] {
