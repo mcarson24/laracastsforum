@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('register/confirm', 'Auth\RegistrationConfirmationController@store');
+
 Route::get('/home', 'HomeController@index');
 
 Route::get('threads', 'ThreadsController@index')->name('threads.index');

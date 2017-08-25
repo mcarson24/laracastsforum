@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar_path'
+        'name', 'email', 'password', 'avatar_path', 'confirmed', 'confirmation_token'
     ];
 
     /**
@@ -26,6 +26,15 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token', 'email',
+    ];
+
+    /**
+     * The attributes that should cast to native types.
+     * 
+     * @var array
+     */
+    protected $casts = [
+        'confirmed' => 'boolean'
     ];
 
     /**
@@ -91,6 +100,11 @@ class User extends Authenticatable
     public function lastReply()
     {
         return $this->hasOne(Reply::class)->latest();
+    }
+
+    public function confirm()
+    {
+        $this->update(['confirmed' => true]);
     }
 
     /**
