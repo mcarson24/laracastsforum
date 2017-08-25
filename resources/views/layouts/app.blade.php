@@ -60,6 +60,12 @@
         [v-cloak] {
             display: none;
         }
+
+        .disabled {
+            pointer-events: none;
+            cursor: default;
+            color: #DDD;
+        }
     </style>
     @yield('head-end')
 </head>

@@ -30,7 +30,12 @@
                     <li><a href="{{ route('threads.index')}}?unanswered=1">Unanswered</a></li>
                   </ul>
                 </li>
-                <li><a href="{{ action('ThreadsController@create') }}">New Thread</a></li>
+                @can('create', $thread)
+                    <li><a href="{{ action('ThreadsController@create') }}">New Thread</a></li>
+                @endcan
+                @cannot('create', $thread)
+                    <li class="disabled"><a href="">New Thread</a></li>
+                @endcannot
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Channels <span class="caret"></span></a>
                   <ul class="dropdown-menu">
