@@ -3,23 +3,30 @@
 namespace Tests\Feature;
 
 use App\Thread;
+use App\Trending;
 use Tests\TestCase;
 use Tests\DatabaseTest;
-use Illuminate\Support\Facades\Redis;
 
 class TrendingThreadsTest extends DatabaseTest
 {
-   /** @test */
-   public function it_increments_a_threads_score_each_time_it_is_viewed()
-   {
-   		$this->assertCount(0, Redis::zrevrange('trending_threads', 0, -1));
+	public function setUp()
+	{
+		parent::setUp();
 
-       	$thread = create(Thread::class);
+		$this->trending = new Trending;
 
-       	$this->get($thread->path());
+		$this->trending->reset();
+	}
 
-       	$this->assertCount(1, $trending = Redis::zrevrange('trending_threads', 0, -1));
+	/** @test */
+	public function it_increments_a_threads_score_each_time_it_is_viewed()
+	{
+		$this->assertCount(0, $this->trending->get());
 
-       	dd($trending);
-   }
+	   	$thread = create(Thread::class);
+
+	   	$this->get($thread->path());
+
+	   	$this->assertCount(1, $this->trending->get());
+	}
 }

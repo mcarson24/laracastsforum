@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Thread;
 use App\Channel;
+use App\Trending;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Filters\ThreadFilters;
-use Illuminate\Support\Facades\Redis;
 
 class ThreadsController extends Controller
 {
@@ -24,15 +24,16 @@ class ThreadsController extends Controller
      * @param  ThreadFilters $filters 
      * @return Illuminate\Http\Response                
      */
-    public function index(Channel $channel, ThreadFilters $filters)
+    public function index(Channel $channel, ThreadFilters $filters, Trending $trending)
     {
         $threads = $this->getThreads($channel, $filters);
 
         if (request()->wantsJson()) return $threads;
 
-        $trending = array_map('json_decode', \Redis::zrevrange('trending_threads', 0, 4));
-
-        return view('threads.index', compact('threads', 'trending'));
+        return view('threads.index', [
+            'threads'  => $threads,
+            'trending' => $trending->get()
+        ]);
     }
 
     /**
@@ -48,13 +49,12 @@ class ThreadsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Inspections\Spam  $spam
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        $this->validate($request, [
+        $this->validate(request(), [
             'title'         => 'required|spamfree',
             'body'          => 'required|spamfree',
             'channel_id'    => 'required|exists:channels,id'
@@ -64,9 +64,9 @@ class ThreadsController extends Controller
 
         $thread = Thread::create([
             'user_id'       => auth()->id(),
-            'title'         => $request->title,
-            'channel_id'    => $request->channel_id,
-            'body'          => $request->body
+            'title'         => request('title'),
+            'channel_id'    => request('channel_id'),
+            'body'          => request('body')
         ]);
 
         return redirect($thread->path($thread->channel, $thread))
@@ -79,17 +79,14 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show($channelId, Thread $thread, Trending $trending)
     {
         if (auth()->check()) 
         {
             auth()->user()->read($thread);
         }
 
-        Redis::zincrby('trending_threads', 1, json_encode([
-            'title' => $thread->title,
-            'path'  => $thread->path()
-        ]));
+        $trending->push($thread);
 
         return view('threads.show', compact('thread'));
     }
