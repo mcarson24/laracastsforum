@@ -17,8 +17,6 @@ abstract class TestCase extends BaseTestCase
     {
     	parent::setUp();
 
-        \Redis::del('trending_threads');
-
     	$this->disableExceptionHandling();
     }
 
