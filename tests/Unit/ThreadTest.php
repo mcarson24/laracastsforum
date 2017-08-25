@@ -133,4 +133,22 @@ class ThreadTest extends DatabaseTest
 
         $this->assertFalse($thread->hasUpdatesForUser());
     }
+
+    /** @test */
+    public function a_thread_records_each_view()
+    {
+        $thread = make(Thread::class, ['id' => 1]);
+
+        $thread->visits()->reset();
+
+        $this->assertSame(0, $thread->visits()->count());
+
+        $thread->visits()->record();
+
+        $this->assertEquals(1, $thread->visits()->count());
+
+        $thread->visits()->record();
+
+        $this->assertEquals(2, $thread->visits()->count());        
+    }
 }

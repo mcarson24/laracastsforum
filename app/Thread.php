@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\RecordsVisits;
 use App\RecordsActivity;
 use App\Events\ThreadHasNewReply;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use RecordsActivity;
+    use RecordsActivity, RecordsVisits;
 
     protected $fillable = ['user_id', 'title', 'body', 'channel_id'];
 

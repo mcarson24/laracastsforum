@@ -21,9 +21,11 @@
         </div>
         <div class="panel-body">
             <article>
-                
                 <div class="body">{{ $thread->body }}</div>
             </article>
+        </div>
+        <div class="panel-footer">
+            <p class="text-right">{{ $thread->visits()->count() }} {{ str_plural('view', $thread->visits()->count()) }}</p>
         </div>
     </div>
 @empty
