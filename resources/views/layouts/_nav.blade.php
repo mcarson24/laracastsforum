@@ -30,12 +30,14 @@
                     <li><a href="{{ route('threads.index')}}?unanswered=1">Unanswered</a></li>
                   </ul>
                 </li>
-                @can('create', $thread)
-                    <li><a href="{{ action('ThreadsController@create') }}">New Thread</a></li>
-                @endcan
-                @cannot('create', $thread)
-                    <li class="disabled"><a href="">New Thread</a></li>
-                @endcannot
+                @if (auth()->check())
+                    @can('create', App\Thread::class)
+                        <li><a href="{{ action('ThreadsController@create') }}">New Thread</a></li>
+                    @endcan
+                    @cannot('create', App\Thread::class)
+                        <li class="disabled"><a href="">New Thread</a></li>
+                    @endcannot
+                @endif
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Channels <span class="caret"></span></a>
                   <ul class="dropdown-menu">
