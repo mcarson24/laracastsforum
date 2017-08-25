@@ -20,11 +20,11 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::get('threads', 'ThreadsController@index')->name('threads.index');
-Route::get('threads/create', 'ThreadsController@create');
+Route::get('threads/create', 'ThreadsController@create')->middleware('email-confirmed');
 Route::get('threads/{channel}', 'ThreadsController@index');
 Route::get('threads/{channel}/{thread}', 'ThreadsController@show');
 Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
-Route::post('threads', 'ThreadsController@store');
+Route::post('threads', 'ThreadsController@store')->middleware('email-confirmed');
 
 Route::post('replies/{reply}/favorites', 'FavoritesController@store');
 Route::delete('replies/{reply}/favorites', 'FavoritesController@destroy');
