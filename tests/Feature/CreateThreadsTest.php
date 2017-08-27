@@ -33,7 +33,7 @@ class CreateThreadsTest extends DatabaseTest
     }
 
     /** @test */
-    public function an_authenticated_user_must_first_confirm_their_email_address_before_creating_threads()
+    public function a_new_user_must_first_confirm_their_email_address_before_creating_threads()
     {
         $user = factory(User::class)->create();
         $this->signIn($user);

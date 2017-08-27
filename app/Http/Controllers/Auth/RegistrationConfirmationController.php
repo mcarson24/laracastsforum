@@ -10,12 +10,15 @@ class RegistrationConfirmationController extends Controller
 {
     public function store()
     {
-    	$user = User::where('confirmation_token', request('token'))->first();
+    	try {
+	    	$user = User::where('confirmation_token', request('token'))->firstOrFail();
+    		
+	    	if ($user->confirmed) return redirect('threads')->with('flash', 'Your email has already been confirmed.');
 
-    	if ($user->confirmed) return redirect('threads')->with('flash', 'Your email has already been confirmed.');
-
-    	$user->confirm();
-
+	    	$user->confirm();
+    	} catch (\Exception $e) {
+    		return redirect(route('threads.index'))->with(['flash' => 'That token is not valid.']);
+    	}
 		return redirect('threads')->with(['flash' => 'Your account has been confirmed! You can now create threads.']);
     }
 }

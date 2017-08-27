@@ -22,7 +22,7 @@ class LayoutComposer
 	 */
 	public function __construct()
 	{
-		$this->channels = Cache::rememberForever('channels', function () {
+		$this->channels = Cache::remember('channels', 100, function () {
 			return Channel::all();
 		});
 	}
