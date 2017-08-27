@@ -35,16 +35,21 @@ class CreateThreadsTest extends DatabaseTest
     /** @test */
     public function an_authenticated_user_must_first_confirm_their_email_address_before_creating_threads()
     {
-        $this->publishThread()
-             ->assertRedirect('threads')
-             ->assertSessionHas('flash', 'You must confirm your email address before creating threads.');
+        $user = factory(User::class)->create();
+        $this->signIn($user);
+        $thread = create(Thread::class);
+
+        $response = $this->post('threads', $thread->toArray());
+
+        $response->assertRedirect('threads');
+        $response->assertSessionHas('flash', 'You must confirm your email address before creating threads.');
     }
 
     /** @test */
     public function an_authenticated_user_can_create_new_forum_threads()
     {
-        $this->signIn();
-
+        $user = factory(User::class)->states('confirmed')->create();
+        $this->signIn($user);
         $thread = make(Thread::class);
 
         $response = $this->post('/threads', $thread->toArray());
@@ -61,8 +66,7 @@ class CreateThreadsTest extends DatabaseTest
     {
         $this->publishThread([
             'title' => null
-        ])
-             ->assertSessionHasErrors('title');
+        ])->assertSessionHasErrors('title');
     }
 
     /** @test */
@@ -153,7 +157,7 @@ class CreateThreadsTest extends DatabaseTest
     protected function publishThread($attributes = [])
     {
         $this->withExceptionHandling()
-             ->signIn();
+             ->signIn(factory(User::class)->states('confirmed')->create());
 
         $thread = make(Thread::class, $attributes);
 

@@ -24,6 +24,12 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->state(App\User::class, 'confirmed', function(Faker\Generator $faker) {
+    return [
+        'confirmed' => true
+    ];
+});
+
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Thread::class, function (Faker\Generator $faker) {
 
