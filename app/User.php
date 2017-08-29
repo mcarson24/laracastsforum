@@ -104,7 +104,10 @@ class User extends Authenticatable
 
     public function confirm()
     {
-        $this->update(['confirmed' => true]);
+        $this->update([
+            'confirmed' => true,
+            'confirmation_token' => null
+        ]);
     }
 
     /**
