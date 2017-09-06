@@ -1,8 +1,9 @@
 <?php
 
+use App\Thread;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class ThreadsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
-        $this->call(ThreadsTableSeeder::class);
+        factory(Thread::class, 30)->create();
     }
 }

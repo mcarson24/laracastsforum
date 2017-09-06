@@ -51,7 +51,7 @@ class CreateThreadsTest extends DatabaseTest
         $user = factory(User::class)->states('confirmed')->create();
         $this->signIn($user);
         $thread = make(Thread::class);
-
+        
         $response = $this->post('/threads', $thread->toArray());
 
         $pathToThread = $response->headers->get('Location');

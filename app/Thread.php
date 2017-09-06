@@ -35,6 +35,11 @@ class Thread extends Model
         });
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
 	/**
 	 * A thread can have many replies.
 	 * 
@@ -129,7 +134,6 @@ class Thread extends Model
      */
     public function path()
     {
-        // return "/threads/{$this->channel->slug}/{$this->id}";
         return action('ThreadsController@show', [$this->channel, $this]);
     }
 

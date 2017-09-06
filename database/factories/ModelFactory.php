@@ -32,9 +32,11 @@ $factory->state(App\User::class, 'confirmed', function(Faker\Generator $faker) {
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Thread::class, function (Faker\Generator $faker) {
+    $title = $faker->sentence;
 
     return [
-        'title' => $faker->sentence,
+        'title' => $title,
+        'slug' => str_slug($title),
         'body' => $faker->paragraph,
         'channel_id' => function() {
             return factory(App\Channel::class)->create()->id;
