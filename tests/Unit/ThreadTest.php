@@ -37,12 +37,6 @@ class ThreadTest extends DatabaseTest
     }
 
     /** @test */
-    public function a_thread_has_a_path_property()
-    {
-        $this->assertEquals("http://forum.dev/threads/{$this->thread->channel->slug}/{$this->thread->slug}", $this->thread->path());
-    }
-
-    /** @test */
     public function a_thread_has_a_path()
     {
         $thread = create(Thread::class);

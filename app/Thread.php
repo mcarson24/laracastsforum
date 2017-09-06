@@ -11,7 +11,7 @@ class Thread extends Model
 {
     use RecordsActivity, RecordsVisits;
 
-    protected $fillable = ['user_id', 'title', 'body', 'channel_id'];
+    protected $fillable = ['user_id', 'title', 'body', 'channel_id', 'slug'];
 
     protected $with = ['creator', 'channel'];
 
@@ -134,7 +134,8 @@ class Thread extends Model
      */
     public function path()
     {
-        return action('ThreadsController@show', [$this->channel, $this]);
+        return url("/threads/{$this->channel->slug}/{$this->slug}");
+        // return action('ThreadsController@show', [$this->channel, $this]);
     }
 
     /**
