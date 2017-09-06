@@ -74,9 +74,25 @@ class CreateThreadsTest extends DatabaseTest
     {
         $this->publishThread([
             'body' => null
-        ])
-             ->assertSessionHasErrors('body');
+        ])->assertSessionHasErrors('body');
     }
+
+    /** @test */
+    function a_thread_requires_a_unique_slug()
+    {
+        $this->signIn(factory(User::class)->states('confirmed')->create());
+
+        $thread = create(Thread::class, ['title' => 'Foo Title', 'slug' => 'foo-title']);
+
+        $this->assertEquals($thread->fresh()->slug, 'foo-title');
+        
+        $this->post('threads', $thread->toArray());
+        $this->post('threads', $thread->toArray());
+
+        $this->assertTrue(Thread::whereSlug('foo-title-2')->exists());
+        $this->assertTrue(Thread::whereSlug('foo-title-3')->exists());
+    }
+
     /** @test */
     public function a_thread_requires_a_valid_channel_id()
     {
