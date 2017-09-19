@@ -19,16 +19,18 @@ class ThreadsController extends Controller
 
     /**
      * Display a listing of Threads.
-     * 
-     * @param  Channel       $channel 
-     * @param  ThreadFilters $filters 
-     * @return Illuminate\Http\Response                
+     *
+     * @param  Channel       $channel
+     * @param  ThreadFilters $filters
+     * @return Illuminate\Http\Response
      */
     public function index(Channel $channel, ThreadFilters $filters, Trending $trending)
     {
         $threads = $this->getThreads($channel, $filters);
 
-        if (request()->wantsJson()) return $threads;
+        if (request()->wantsJson()) {
+            return $threads;
+        }
 
         return view('threads.index', [
             'threads'  => $threads,
@@ -67,11 +69,14 @@ class ThreadsController extends Controller
             'channel_id' => request('channel_id'),
             'title' => request('title'),
             'body' => request('body'),
-            'slug' => request('title')
         ]);
 
+        if (request()->wantsJson()) {
+            return response($thread, 201);
+        }
+
         return redirect($thread->path($thread->channel, $thread))
-                ->with('flash', 'Your thread has been created!');   
+                ->with('flash', 'Your thread has been created!');
     }
 
     /**
@@ -82,8 +87,7 @@ class ThreadsController extends Controller
      */
     public function show($channelId, Thread $thread, Trending $trending)
     {
-        if (auth()->check()) 
-        {
+        if (auth()->check()) {
             auth()->user()->read($thread);
         }
 
@@ -105,8 +109,7 @@ class ThreadsController extends Controller
 
         $thread->delete();
 
-        if (request()->wantsJson())
-        {
+        if (request()->wantsJson()) {
             return response([], 204);
         }
 
@@ -115,16 +118,15 @@ class ThreadsController extends Controller
 
     /**
      * Get filtered threads by a given channel.
-     * 
-     * @param  Channel       $channel 
-     * @param  ThreadFilters $filters 
+     *
+     * @param  Channel       $channel
+     * @param  ThreadFilters $filters
      */
     protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
         $threads = Thread::with('creator')->latest()->filter($filters);
 
-        if ($channel->exists)
-        {
+        if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
         }
 

@@ -28,8 +28,12 @@ class Thread extends Model
         //     $builder->withCount('replies');
         // });
 
-        static::deleting(function($thread) {
-            $thread->replies->each(function($reply) {
+        static::created(function ($thread) {
+            $thread->update(['slug' => $thread->title]);
+        });
+
+        static::deleting(function ($thread) {
+            $thread->replies->each(function ($reply) {
                 $reply->delete();
             });
         });
@@ -40,19 +44,19 @@ class Thread extends Model
         return 'slug';
     }
 
-	/**
-	 * A thread can have many replies.
-	 * 
-	 * @return Illuminate\Database\Eloquent\Relations\HasMany
-	 */
+    /**
+     * A thread can have many replies.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function replies()
     {
-    	return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class);
     }
 
     /**
      * Subscribe to a thread.
-     * 
+     *
      * @param  integer|null $userId
      * @return $this
      */
@@ -67,9 +71,9 @@ class Thread extends Model
 
     /**
      * Unsubscribe from a thread.
-     * 
-     * @param  integer $userId 
-     * @return null         
+     *
+     * @param  integer $userId
+     * @return null
      */
     public function unsubscribe($userId = null)
     {
@@ -80,7 +84,7 @@ class Thread extends Model
 
     /**
      * Get a listing of this thread's subscriptions.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function subscriptions()
@@ -90,7 +94,7 @@ class Thread extends Model
 
     /**
      * Determine if the thread subscribed to by the current.
-     * 
+     *
      * @return bool
      */
     public function getIsSubscribedToAttribute()
@@ -100,19 +104,19 @@ class Thread extends Model
                     ->exists();
     }
 
-    /**	
+    /**
      * A thread is created by a single user.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\BelongsTo
      */
     public function creator()
     {
-    	return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
      * A thread belongs to a single channel.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\BelongsTo
      */
     public function channel()
@@ -122,14 +126,16 @@ class Thread extends Model
 
     public function hasUpdatesForUser()
     {
-        if (auth()->guest()) return;
+        if (auth()->guest()) {
+            return;
+        }
         
         return $this->updated_at > cache(auth()->user()->visitedThreadCacheKey($this));
     }
 
     /**
      * Return the url path of the thread.
-     * 
+     *
      * @return string
      */
     public function path()
@@ -140,7 +146,7 @@ class Thread extends Model
 
     /**
      * Add a new reply to the current thread.
-     * 
+     *
      * @param   array $reply
      * @return  Reply
      */
@@ -165,29 +171,12 @@ class Thread extends Model
      */
     public function setSlugAttribute($value)
     {
-        if (static::whereSlug($slug = str_slug($value))->exists()) {
-            $slug = $this->incrementSlug($slug);
+        $slug = str_slug($value);
+
+        if (static::whereSlug($slug)->exists()) {
+            $slug = "{$slug}-" . $this->id;
         }
 
         $this->attributes['slug'] = $slug;
-    }
-
-    /**
-     * Increment a slug's suffix.
-     *
-     * @param  string $slug
-     * @return string
-     */
-    protected function incrementSlug($slug)
-    {
-        $max = static::whereTitle($this->title)->latest('id')->value('slug');
-
-        if (is_numeric($max[-1])) {
-            return preg_replace_callback('/(\d+)$/', function ($matches) {
-                return $matches[1] + 1;
-            }, $max);
-        }
-
-        return "{$slug}-2";
     }
 }

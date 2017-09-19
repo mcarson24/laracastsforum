@@ -2,26 +2,26 @@
 
 namespace Tests\Feature;
 
-use App\Activity;
-use App\Channel;
+use App\User;
 use App\Reply;
 use App\Thread;
-use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Channel;
+use App\Activity;
 use Tests\DatabaseTest;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CreateThreadsTest extends DatabaseTest
 {
 
-	/** @test */
-	public function guests_cannot_create_threads()
-	{
+    /** @test */
+    public function guests_cannot_create_threads()
+    {
         $this->expectException(\Illuminate\Auth\AuthenticationException::class);
 
-	    $thread = make(Thread::class);
+        $thread = make(Thread::class);
 
         $this->post('/threads', $thread->toArray());
-	}
+    }
 
     /** @test */
     public function guests_cannot_see_new_forum_creation_page()
@@ -78,19 +78,31 @@ class CreateThreadsTest extends DatabaseTest
     }
 
     /** @test */
-    function a_thread_requires_a_unique_slug()
+    public function a_thread_requires_a_unique_slug()
     {
         $this->signIn(factory(User::class)->states('confirmed')->create());
 
-        $thread = create(Thread::class, ['title' => 'Foo Title', 'slug' => 'foo-title']);
+        create(Thread::class, [], 2);
+        $thread = create(Thread::class, ['title' => 'Foo Title']);
 
         $this->assertEquals($thread->fresh()->slug, 'foo-title');
         
-        $this->post('threads', $thread->toArray());
-        $this->post('threads', $thread->toArray());
+        $thread = $this->postJson('threads', $thread->toArray())->json();
 
-        $this->assertTrue(Thread::whereSlug('foo-title-2')->exists());
-        $this->assertTrue(Thread::whereSlug('foo-title-3')->exists());
+        $this->assertEquals("foo-title-{$thread['id']}", $thread['slug']);
+    }
+
+    /** @test */
+    public function a_thread_with_a_title_ending_in_a_number_generates_the_proper_slug()
+    {
+        $this->signIn(factory(User::class)->states('confirmed')->create());
+        
+        create(Thread::class, ['title' => 'We are number 1']);
+        
+        $thread = create(Thread::class, ['title' => 'We are number 1']);
+        $thread = $this->postJson('threads', $thread->toArray())->json();
+
+        $this->assertEquals("we-are-number-1-{$thread['id']}", $thread['slug']);
     }
 
     /** @test */
