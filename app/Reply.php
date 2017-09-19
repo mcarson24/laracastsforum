@@ -10,7 +10,7 @@ class Reply extends Model
 {
     use Favoritable, RecordsActivity;
 
-	protected $fillable = ['body', 'user_id'];
+    protected $fillable = ['body', 'user_id'];
 
     protected $with = ['owner', 'favorites'];
 
@@ -20,28 +20,28 @@ class Reply extends Model
     {
         parent::boot();
 
-        static::creating(function($reply) {
+        static::creating(function ($reply) {
             $reply->thread->increment('replies_count');
         });
 
-        static::deleting(function($reply) {
+        static::deleting(function ($reply) {
             $reply->thread->decrement('replies_count');
         });
     }
 
-	/**
-	 * A reply was written by a single user.
-	 * 
-	 * @return Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
+    /**
+     * A reply was written by a single user.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function owner()
     {
-    	return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function thread()
     {
-    	return $this->belongsTo(Thread::class);
+        return $this->belongsTo(Thread::class);
     }
 
     public function path()
@@ -64,5 +64,10 @@ class Reply extends Model
     public function setBodyAttribute($body)
     {
         $this->attributes['body'] = preg_replace('/\@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);
+    }
+
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
     }
 }
