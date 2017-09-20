@@ -66,6 +66,10 @@
             cursor: default;
             color: #DDD;
         }
+
+        .m-l-auto {
+            margin-left: auto;
+        }
     </style>
     @yield('head-end')
 </head>

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="panel" :class="isBest ? 'panel-success' : ''">
 		<div :id="'reply-' + this.id" class="panel-heading">
 			<div v-if="editing">
 				<form @submit="update">
@@ -27,9 +27,12 @@
 		    		</div>
 		    </div>
 		</div>
-			<div class="panel-footer level" v-show="canUpdate">
-				<button class="btn btn-default btn-xs mr-1" @click="editing = !editing">Edit</button>
-				<button class="btn btn-default btn-xs" @click="destroy">Delete</button>
+			<div class="panel-footer level">
+				<div v-show="canUpdate">
+					<button class="btn btn-default btn-xs mr-1" @click="editing = !editing">Edit</button>
+					<button class="btn btn-default btn-xs" @click="destroy">Delete</button>
+				</div>
+				<button class="btn btn-default btn-xs m-l-auto" @click="markBestReply" v-show="!isBest">Best Reply</button>
 			</div>
 	</div>
 </template>
@@ -45,7 +48,8 @@
 			return {
 				editing: false,
 				body: this.data.body,
-				id: this.data.id
+				id: this.data.id,
+				isBest: false
 			};
 		},
 		computed: {
@@ -75,6 +79,9 @@
 				this.$emit('deleted', this.id);
 
 				flash('Your reply was deleted.');
+			},
+			markBestReply() {
+				this.isBest = true;
 			}
 		}
 	}
