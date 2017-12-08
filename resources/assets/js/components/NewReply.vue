@@ -33,9 +33,6 @@
 			}
 		},
 		computed: {
-			signedIn() {
-				return window.App.signedIn;
-			},
 			csrfToken() {
 				return window.App.csrfToken;
 			},
