@@ -61,6 +61,6 @@ class ReplyTest extends DatabaseTest
 
         $reply->thread->update(['best_reply_id' => $reply->id]);
         
-        $this->assertTrue($reply->isBest());
+        $this->assertTrue($reply->fresh()->isBest());
     }
 }
