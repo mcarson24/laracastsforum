@@ -70,6 +70,14 @@
         .m-l-auto {
             margin-left: auto;
         }
+
+        .reply-panel .panel-heading,
+        .reply-panel .panel-body {
+            border-left: 3px solid #1CB1B2;
+            border-bottom: 0px;
+            border-radius: 0;
+        }
+
     </style>
     @yield('head-end')
 </head>

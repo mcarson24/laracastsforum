@@ -1,5 +1,5 @@
 <template>
-	<div class="panel" :class="isBest ? 'panel-success' : ''">
+	<div class="panel reply-panel" :class="isBest ? 'panel-success' : ''">
 		<div :id="'reply-' + this.id" class="panel-heading">
 			<div v-if="editing">
 				<form @submit="update">
