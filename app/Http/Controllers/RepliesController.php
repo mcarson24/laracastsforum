@@ -55,7 +55,10 @@ class RepliesController extends Controller
             'body' => 'required|spamfree'
         ]);
 
-        $reply->update(request(['body']));
+        if ($reply->update(request(['body'])))
+        {
+            return response('Success', 201);
+        }
         
         return response('Sorry, your reply could not be saved at this time.', 422); 
     }
