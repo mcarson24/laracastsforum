@@ -15,15 +15,15 @@
 		<div class="panel-body">
 			<div class="level">
 				<h5 class="flex">
-				    by <a :href="'/profiles/' + data.owner.name" v-text="data.owner.name"></a>
+				    by <a :href="'/profiles/' + reply.owner.name" v-text="reply.owner.name"></a>
 				    <span class="reply-time" v-text="ago"></span>
 				</h5>
 					<div v-if="signedIn">
-				    	<favorite :reply="data"></favorite>
+				    	<favorite :reply="reply"></favorite>
 			    	</div>
 			    	<div v-else>
 				    	<span class="glyphicon glyphicon-heart mr-quarter"></span>
-			    		<span>{{ data.favoritesCount }}</span>
+			    		<span>{{ reply.favoritesCount }}</span>
 		    		</div>
 		    </div>
 		</div>
@@ -42,30 +42,29 @@
 	import moment from 'moment';
 
 	export default {
-		props: ['data'],
+		props: ['reply'],
 		components: { Favorite },
 		data() {
 			return {
 				editing: false,
-				body: this.data.body,
-				id: this.data.id,
-				isBest: this.data.isBest,
-				reply: this.data
+				body: this.reply.body,
+				id: this.reply.id,
+				isBest: this.reply.isBest,
 			};
 		},
 		computed: {
 			ago() {
-				return moment(this.data.created_at).parseZone('UTC').fromNow();
+				return moment(this.reply.created_at).parseZone('UTC').fromNow();
 			}
 		},
 		created() {
 			window.events.$on('best-reply-selected', id => {
-				this.isBest = (id === this.reply.id);
+				this.isBest = (id === this.id);
 			});
 		},
 		methods: {
 			update() {
-				axios.patch('/replies/' + this.data.id, {
+				axios.patch('/replies/' + this.id, {
 					body: this.body
 				}).catch(errors => {
 					flash(errors.response.data, 'danger');
@@ -74,16 +73,16 @@
 				this.editing = false;
 			},
 			destroy() {
-				axios.delete('/replies/' + this.data.id);
+				axios.delete('/replies/' + this.id);
 
 				this.$emit('deleted', this.id);
 
 				flash('Your reply was deleted.');
 			},
 			markBestReply() {
-				axios.post(`/replies/${this.reply.id}/best`);
+				axios.post(`/replies/${this.id}/best`);
 
-				window.events.$emit('best-reply-selected', this.reply.id);
+				window.events.$emit('best-reply-selected', this.id);
 			}
 		}
 	}
