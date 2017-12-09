@@ -21,7 +21,7 @@ window.Vue = require('vue');
 
 let authorizations = require('./authorizations.js');
 
-Vue.prototype.authorizedTo = function(...params) {
+Vue.prototype.authorize = function(...params) {
 	if (!window.App.signedIn) return false;
 
 	if (typeof params[0] === 'string') {

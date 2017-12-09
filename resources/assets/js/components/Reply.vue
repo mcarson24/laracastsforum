@@ -27,12 +27,12 @@
 		    		</div>
 		    </div>
 		</div>
-			<div class="panel-footer level">
-				<div v-if="authorizedTo('updateReply', reply)">
+			<div class="panel-footer level" v-if="authorize('owns', reply.thread) || authorize('owns', reply)">
+				<div v-if="authorize('owns', reply)">
 					<button class="btn btn-default btn-xs mr-1" @click="editing = !editing">Edit</button>
 					<button class="btn btn-default btn-xs" @click="destroy">Delete</button>
 				</div>
-				<button class="btn btn-default btn-xs m-l-auto" @click="markBestReply" v-show="!isBest">Best Reply</button>
+				<button class="btn btn-default btn-xs m-l-auto" @click="markBestReply" v-if="authorize('owns', reply.thread)">Best Reply</button>
 			</div>
 	</div>
 </template>
