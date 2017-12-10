@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Notification;
 
 class ThreadTest extends DatabaseTest
 {
-
     protected $thread;
 
 	public function setUp()
@@ -144,5 +143,15 @@ class ThreadTest extends DatabaseTest
         $thread->visits()->record();
 
         $this->assertEquals(2, $thread->visits()->count());        
+    }
+
+    /** @test */
+    public function a_thread_may_be_locked()
+    {
+        $this->assertFalse($this->thread->locked);
+
+        $this->thread->update(['locked' => true]);
+
+        $this->assertTrue($this->thread->locked);
     }
 }
