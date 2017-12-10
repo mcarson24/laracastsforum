@@ -30,6 +30,12 @@ $factory->state(App\User::class, 'confirmed', function(Faker\Generator $faker) {
     ];
 });
 
+$factory->state(App\User::class, 'administrator', function() {
+    return [
+        'name' => 'JohnDoe'
+    ];
+});
+
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Thread::class, function (Faker\Generator $faker) {
     $title = $faker->sentence;

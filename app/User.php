@@ -67,6 +67,11 @@ class User extends Authenticatable
         return $this->hasMany(Activity::class);
     }
 
+    public function isAdmin()
+    {
+        return in_array($this->name, ['JohnDoe', 'JaneDoe']);
+    }
+
     /**
      * Store in the cache when this user last read a thread.
      * 

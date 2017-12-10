@@ -97,6 +97,16 @@ class ThreadsController extends Controller
         return view('threads.show', compact('thread'));
     }
 
+    public function update(Channel $channel, Thread $thread)
+    {
+        if (request()->has('locked'))   
+        {
+            if (!auth()->user()->isAdmin()) return response('', 403);
+
+            $thread->lock();
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
