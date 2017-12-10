@@ -99,12 +99,12 @@ class ThreadsController extends Controller
 
     public function update(Channel $channel, Thread $thread)
     {
-        if (request()->has('locked'))   
-        {
-            if (!auth()->user()->isAdmin()) return response('', 403);
+        // if (request()->has('locked'))   
+        // {
+        //     if (!auth()->user()->isAdmin()) return response('', 403);
 
-            $thread->lock();
-        }
+        //     $thread->lock();
+        // }
     }
 
     /**
