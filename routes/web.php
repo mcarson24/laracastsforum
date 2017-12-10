@@ -28,7 +28,7 @@ Route::get('threads/{channel}/{thread}', 'ThreadsController@show');
 Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
 Route::post('threads', 'ThreadsController@store')->middleware('email-confirmed');
 
-Route::post('lock-thread/{thread}', 'LockedThreadsController@store')->name('locked-threads.store');
+Route::post('lock-thread/{thread}', 'LockedThreadsController@store')->name('locked-threads.store')->middleware('must-be-admin');
 
 Route::post('replies/{reply}/favorites', 'FavoritesController@store');
 Route::delete('replies/{reply}/favorites', 'FavoritesController@destroy');

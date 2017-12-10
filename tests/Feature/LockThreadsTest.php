@@ -16,6 +16,8 @@ class LockThreadsTest extends TestCase
 	/** @test */
 	public function non_administrators_may_not_lock_threads()
 	{
+		$this->withExceptionHandling();
+		
 	    $this->signIn();
 
 	    $thread = create(Thread::class, ['user_id' => auth()->id()]);
