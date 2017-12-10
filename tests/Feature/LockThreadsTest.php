@@ -13,7 +13,7 @@ class LockThreadsTest extends TestCase
 	use DatabaseMigrations;
 
     /** @test */
-    public function a_thread_can_be_locked()
+    public function a_thread_that_has_been_locked_cannot_be_replied_to()
     {
         $this->signIn();
 
@@ -21,7 +21,7 @@ class LockThreadsTest extends TestCase
 
         $thread->lock();
 
-        $response = $this->postJson($thread->path() . '/replies', [
+        $response = $this->post($thread->path() . '/replies', [
         	'body' 		=> 'This is a test reply.',
         	'user_id'	=> auth()->id()
         ]);
