@@ -27,7 +27,7 @@ class LockThreadsTest extends TestCase
 	    $response = $this->post(route('locked-threads.store', $thread));
 
 	    $response->assertStatus(403);
-	    $this->assertFalse(!!$thread->fresh()->locked);
+	    $this->assertFalse($thread->fresh()->locked);
 	}
 
 	/** @test */
@@ -45,7 +45,7 @@ class LockThreadsTest extends TestCase
 	    $response = $this->delete(route('locked-threads.destroy', $thread));
 
 	    $response->assertStatus(403);
-	    $this->assertTrue(!!$thread->fresh()->locked);
+	    $this->assertTrue($thread->fresh()->locked);
 	}
 
 	/** @test */
