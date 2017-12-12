@@ -4,12 +4,19 @@
 
 	export default {
 		components: { Replies, SubscribeButton },
-		props: ['dataRepliesCount', 'dataLocked'],
+		props: ['thread'],
 		data() {
 			return {
-				repliesCount: this.intialRepliesCount,
-				locked: this.dataLocked
+				repliesCount: this.thread.replies_count,
+				locked: this.thread.locked
 			}
-		}
+		},
+		methods: {
+			lock() {
+				this.locked = true;
+
+				axios.post(`/lock-thread/${this.thread.slug}`);
+			}
+		},
 	}
 </script>
