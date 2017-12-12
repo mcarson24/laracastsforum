@@ -59,6 +59,11 @@ class Thread extends Model
         $this->update(['locked' => true]);
     }
 
+    public function unlock()
+    {
+        $this->update(['locked' => false]);
+    }
+
     /**
      * Subscribe to a thread.
      *

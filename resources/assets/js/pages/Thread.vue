@@ -12,10 +12,15 @@
 			}
 		},
 		methods: {
-			lock() {
-				this.locked = true;
+			toggleLock() {
+				this.locked = !this.locked;
 
-				axios.post(`/lock-thread/${this.thread.slug}`);
+				if (this.locked) {
+					axios.post(`/lock-thread/${this.thread.slug}`);
+				}
+				else {
+					axios.delete(`/unlock-thread/${this.thread.slug}`);
+				}
 			}
 		},
 	}
