@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <thread-view :intial-replies-count="{{ $thread->replies->count() }}" inline-template>
+    <thread-view :data-replies-count="{{ $thread->replies->count() }}" :data-locked="{{ $thread->locked }}" inline-template>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -44,7 +44,9 @@
                             <div class="panel-body">
                                 <p>This discussion was created {{ $thread->created_at->diffForHumans() }} by <a href="{{ action('ProfilesController@show', $thread->creator) }}">{{ $thread->creator->name }}</a>, it currently has <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.</p>
                                 <p>
-                                    <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
+                                    <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
+
+                                    <button class="button btn btn-default" v-if="authorize('isAdmin')" @click="locked = !locked">@{{ locked ? 'Unlock' : 'Lock' }}</button>
                                 </p>
                             </div>
                         </div>

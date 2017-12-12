@@ -48,6 +48,10 @@
         .mr-top-25 {
             margin-top: 25px;
         }
+
+        .m-all-small {
+            margin: 15px;
+        }
         
         .list-group-item {
             border: none;

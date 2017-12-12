@@ -4,7 +4,10 @@
 			<reply :reply="reply" @deleted="remove(index)" :key="reply.id"></reply>
 		</div>
         <paginator :data="dataSet" @changed-page="fetch"></paginator>
-        <new-reply @created="add"></new-reply>
+        <p v-if="$parent.locked" class="text-center alert alert-danger m-all-small">
+        	This thread has been locked by an administrator. No new replies are being accepted.
+        </p>
+        <new-reply @created="add" v-else></new-reply>
 	</div>
 </template>
 
@@ -18,7 +21,8 @@
 		mixins: [collection],
 		data() {
 			return {
-				dataSet: false
+				dataSet: false,
+				locked: false
 			}
 		},
 		created() {
