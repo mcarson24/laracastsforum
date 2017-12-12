@@ -15,12 +15,7 @@
 			toggleLock() {
 				this.locked = !this.locked;
 
-				if (this.locked) {
-					axios.post(`/lock-thread/${this.thread.slug}`);
-				}
-				else {
-					axios.delete(`/unlock-thread/${this.thread.slug}`);
-				}
+				axios[this.locked ? 'post' : 'delete'](`/lock-thread/${this.thread.slug}`);
 			}
 		},
 	}
