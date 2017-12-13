@@ -10,3 +10,4 @@ Homestead.yaml
 .env
 /public/js/app.js
 dump.rdb
+.php_cs.cache
