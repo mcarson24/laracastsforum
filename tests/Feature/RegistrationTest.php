@@ -24,7 +24,7 @@ class RegistrationTest extends DatabaseTest
 
         $user = User::first();
 
-        Mail::assertSent(ConfirmYourEmailAddress::class, function($mailable) use ($user) {
+        Mail::assertQueued(ConfirmYourEmailAddress::class, function($mailable) use ($user) {
         	return $mailable->email = $user->email;
         });
     }

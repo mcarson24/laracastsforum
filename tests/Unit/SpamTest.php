@@ -19,7 +19,7 @@ class SpamTest extends TestCase
         try {
 			$spam->detect('This reply is from Yahoo Customer Support');
         } catch (\Exception $e) {
-        	return;
+            return;
         }
         $this->fail('Spam replies should not have been saved successfully.');
     }
@@ -28,6 +28,9 @@ class SpamTest extends TestCase
     public function it_checks_for_keys_being_held_down()
     {
         $spam = new Spam;
+
+        $this->assertFalse($spam->detect('No keys being held down here.'));
+
         try {
 	        $spam->detect('Hellooooooooooooooo wooooooooooooooooooooooooooooooorld!!!!!!!!!!!!!!!!!!!!!!!!!');
         } catch (\Exception $e) {
