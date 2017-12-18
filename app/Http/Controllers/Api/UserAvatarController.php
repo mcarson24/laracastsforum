@@ -12,9 +12,14 @@ class UserAvatarController extends Controller
 		$this->middleware('auth');
 	}
 
+	/**
+	 * Store a new user avatar
+	 * 
+	 * @return Illuminate\Http\Response
+	 */
     public function store()
     {
-    	$this->validate(request(), [
+    	request()->validate([
     		'avatar' => 'required|image'
 		]);
 

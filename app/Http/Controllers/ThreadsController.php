@@ -53,11 +53,11 @@ class ThreadsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Inspections\Spam  $spam
-     * @return \Illuminate\Http\Response
+     * @param \App\Rules\Recaptcha
      */
-    public function store(Request $request, Recaptcha $recaptcha)
+    public function store(Recaptcha $recaptcha)
     {
-        $request->validate([
+        request()->validate([
             'title'                 => 'required|spamfree',
             'body'                  => 'required|spamfree',
             'channel_id'            => 'required|exists:channels,id',
@@ -100,6 +100,13 @@ class ThreadsController extends Controller
         return view('threads.show', compact('thread'));
     }
 
+    /**
+     * Update a thread.
+     * 
+     * @param  $channelId 
+     * @param  Thread $thread    
+     * @return \Illuminate\Http\RedirectResponse       
+     */
     public function update($channelId, Thread $thread)
     {
         $this->authorize('update', $thread);
@@ -118,7 +125,7 @@ class ThreadsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Channel $channel, Thread $thread)
     {

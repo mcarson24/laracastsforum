@@ -21,9 +21,6 @@ class Thread extends Model
         'locked'    => 'boolean'
     ];
 
-    /**
-     * @return void
-     */
     public static function boot()
     {
         parent::boot();
@@ -58,11 +55,17 @@ class Thread extends Model
         return $this->hasMany(Reply::class);
     }
 
+    /**
+     * Lock the thread.
+     */
     public function lock()
     {
         $this->update(['locked' => true]);
     }
 
+    /**
+     * Unlock the thread.
+     */
     public function unlock()
     {
         $this->update(['locked' => false]);
@@ -138,6 +141,12 @@ class Thread extends Model
         return $this->belongsTo(Channel::class);
     }
 
+    /**
+     * Determine if the thread has been updated since
+     * the user last visited the thread.
+     * 
+     * @return boolean
+     */
     public function hasUpdatesForUser()
     {
         if (auth()->guest()) {
@@ -155,7 +164,6 @@ class Thread extends Model
     public function path()
     {
         return url("/threads/{$this->channel->slug}/{$this->slug}");
-        // return action('ThreadsController@show', [$this->channel, $this]);
     }
 
     /**

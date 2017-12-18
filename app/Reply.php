@@ -43,16 +43,31 @@ class Reply extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * A reply belongs to a single thread.
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function thread()
     {
         return $this->belongsTo(Thread::class);
     }
 
+    /**
+     * Returns the reply's path.
+     * 
+     * @return string
+     */
     public function path()
     {
         return $this->thread->path() . '#reply-' . $this->id;
     }
 
+    /**
+     * Returns an array of all user's mentioned in a reply.
+     
+     * @return array
+     */
     public function mentionedUsers()
     {
         preg_match_all('/\@([\w]+)/', $this->body, $matches);
@@ -60,21 +75,41 @@ class Reply extends Model
         return $matches[1];
     }
 
+    /**
+     * Determine if the reply was just published.
+     * 
+     * @return boolean
+     */
     public function wasJustPublished()
     {
         return $this->created_at->gt(Carbon::now()->subMinute());
     }
 
+    /**
+     * Sets usernames in reply to links to the user's profile.
+     * 
+     * @param string
+     */
     public function setBodyAttribute($body)
     {
         $this->attributes['body'] = preg_replace('/\@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);
     }
 
+    /**
+     * Has the reply been marked as the best reply of the thread?
+     * 
+     * @return boolean
+     */
     public function isBest()
     {
         return $this->thread->best_reply_id == $this->id;
     }
 
+    /**
+     * Return the reply's isBest attribute.
+     * 
+     * @return string
+     */
     public function getIsBestAttribute()
     {
         return $this->isBest();
