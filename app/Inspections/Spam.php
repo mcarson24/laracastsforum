@@ -2,11 +2,12 @@
 
 namespace App\Inspections;
 
-use App\Inspections\InvalidKeywords;
+use App\Inspections\SpamFilter;
 use App\Inspections\KeyHeldDown;
+use App\Inspections\InvalidKeywords;
 use App\Inspections\TooManyRequests;
 
-class Spam
+class Spam implements SpamFilter
 {
 	protected $inspections = [
 		InvalidKeywords::class,

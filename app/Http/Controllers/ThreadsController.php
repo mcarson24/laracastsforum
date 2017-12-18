@@ -63,7 +63,7 @@ class ThreadsController extends Controller
             'channel_id'            => 'required|exists:channels,id',
             'g-recaptcha-response'  => ['required', $recaptcha]
         ], [
-            'channel_id.required' => 'Please select a channel for your new thread.',
+            'channel_id.required'           => 'Please select a channel for your new thread.',
             'g-recaptcha-response.required' => 'Please prove that you are not a bot.'
         ]);
 
@@ -98,6 +98,20 @@ class ThreadsController extends Controller
         $trending->push($thread);
 
         return view('threads.show', compact('thread'));
+    }
+
+    public function update($channelId, Thread $thread)
+    {
+        $this->authorize('update', $thread);
+
+        request()->validate([
+            'title' => 'required|spamfree',
+            'body'  => 'required|spamfree'
+        ]);
+
+        $thread->update(request(['title', 'body']));
+
+        return redirect($thread->path());
     }
 
     /**
