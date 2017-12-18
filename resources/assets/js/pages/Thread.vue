@@ -8,7 +8,8 @@
 		data() {
 			return {
 				repliesCount: this.thread.replies_count,
-				locked: this.thread.locked
+				locked: this.thread.locked,
+				editing: false
 			}
 		},
 		methods: {
@@ -16,7 +17,10 @@
 				this.locked = !this.locked;
 
 				axios[this.locked ? 'post' : 'delete'](`/lock-thread/${this.thread.slug}`);
+			},
+			toggleEdit() {
+				this.editing = !this.editing;
 			}
-		},
+		}
 	}
 </script>

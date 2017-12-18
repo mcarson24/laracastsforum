@@ -81,7 +81,6 @@
             border-bottom: 0px;
             border-radius: 0;
         }
-
     </style>
     @yield('head-end')
 </head>
