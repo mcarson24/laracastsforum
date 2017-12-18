@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Zttp\Zttp;
 use App\Thread;
 use App\Channel;
 use App\Trending;
 use Carbon\Carbon;
+use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use App\Filters\ThreadFilters;
 
@@ -55,23 +55,17 @@ class ThreadsController extends Controller
      * @param  \App\Inspections\Spam  $spam
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request, Recaptcha $recaptcha)
     {
-        $this->validate(request(), [
-            'title'         => 'required|spamfree',
-            'body'          => 'required|spamfree',
-            'channel_id'    => 'required|exists:channels,id'
+        $request->validate([
+            'title'                 => 'required|spamfree',
+            'body'                  => 'required|spamfree',
+            'channel_id'            => 'required|exists:channels,id',
+            'g-recaptcha-response'  => ['required', $recaptcha]
         ], [
-            'channel_id.required' => 'Please select a channel for your new thread.'
+            'channel_id.required' => 'Please select a channel for your new thread.',
+            'g-recaptcha-response.required' => 'Please prove that you are not a bot.'
         ]);
-
-        $response = Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret'    => config('services.recaptcha.secret'),
-            'response'  => request('g-recaptcha-response'),
-            'remoteip'  => $_SERVER['REMOTE_ADDR']
-        ]);
-
-        if (!$response->json()['success']) throw new \Exception('No Robots Allowed! Failed Recaptcha.');
 
         $thread = Thread::create([
             'user_id' => auth()->id(),

@@ -8,10 +8,22 @@ use App\Thread;
 use App\Channel;
 use App\Activity;
 use Tests\DatabaseTest;
+use App\Rules\Recaptcha;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CreateThreadsTest extends DatabaseTest
 {
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        app()->singleton(Recaptcha::class, function() {
+            return \Mockery::mock(Recaptcha::class, function($m) {
+                $m->shouldReceive('passes')->andReturn(true);
+            });
+        });
+    }
 
     /** @test */
     public function guests_cannot_create_threads()
@@ -48,24 +60,18 @@ class CreateThreadsTest extends DatabaseTest
     /** @test */
     public function an_authenticated_user_can_create_new_forum_threads()
     {
-        $user = factory(User::class)->states('confirmed')->create();
-        $this->signIn($user);
-        $thread = make(Thread::class);
-        
-        $response = $this->post('/threads', $thread->toArray());
+        $response = $this->publishThread(['title' => 'Test title', 'body' => 'A test body.']);
 
-        $pathToThread = $response->headers->get('Location');
-
-        $this->get($pathToThread)
-             ->assertSee($thread->title)
-             ->assertSee($thread->body);
+        $this->get($response->headers->get('Location'))
+             ->assertSee('Test title')
+             ->assertSee('A test body.');
     }
 
     /** @test */
     public function a_thread_requires_a_title()
     {
         $this->publishThread([
-            'title' => null
+            'title' => null,
         ])->assertSessionHasErrors('title');
     }
 
@@ -78,6 +84,16 @@ class CreateThreadsTest extends DatabaseTest
     }
 
     /** @test */
+    public function a_thread_requires_recaptcha_verification()
+    {
+        unset(app()[Recaptcha::class]);
+
+        $this->publishThread([
+            'g-recaptcha-response' => 'test-token'
+        ])->assertSessionHasErrors('g-recaptcha-response');
+    }
+
+    /** @test */
     public function a_thread_requires_a_unique_slug()
     {
         $this->signIn(factory(User::class)->states('confirmed')->create());
@@ -87,7 +103,7 @@ class CreateThreadsTest extends DatabaseTest
 
         $this->assertEquals($thread->fresh()->slug, 'foo-title');
         
-        $thread = $this->postJson('threads', $thread->toArray())->json();
+        $thread = $this->postJson('threads', $thread->toArray() + ['g-recaptcha-response' => 'test-token'])->json();
 
         $this->assertEquals("foo-title-{$thread['id']}", $thread['slug']);
     }
@@ -100,7 +116,7 @@ class CreateThreadsTest extends DatabaseTest
         create(Thread::class, ['title' => 'We are number 1']);
         
         $thread = create(Thread::class, ['title' => 'We are number 1']);
-        $thread = $this->postJson('threads', $thread->toArray())->json();
+        $thread = $this->postJson('threads', $thread->toArray() + ['g-recaptcha-response' => 'test-token'])->json();
 
         $this->assertEquals("we-are-number-1-{$thread['id']}", $thread['slug']);
     }
@@ -112,13 +128,11 @@ class CreateThreadsTest extends DatabaseTest
 
         $this->publishThread([
             'channel_id' => null
-        ])
-             ->assertSessionHasErrors('channel_id');
+        ])->assertSessionHasErrors('channel_id');
 
         $this->publishThread([
             'channel_id' => 99999
-        ])
-             ->assertSessionHasErrors('channel_id');
+        ])->assertSessionHasErrors('channel_id');
     }
 
     /** @test */
@@ -189,6 +203,6 @@ class CreateThreadsTest extends DatabaseTest
 
         $thread = make(Thread::class, $attributes);
 
-        return $this->post('/threads', $thread->toArray());
+        return $this->post('/threads', $thread->toArray() + ['g-recaptcha-response' => 'test-token']);
     }
 }
