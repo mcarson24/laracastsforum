@@ -118,7 +118,7 @@ class ThreadsController extends Controller
 
         $thread->update(request(['title', 'body']));
 
-        return redirect($thread->path());
+        return response($thread, 201);
     }
 
     /**

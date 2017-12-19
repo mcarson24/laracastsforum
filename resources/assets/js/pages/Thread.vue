@@ -9,7 +9,11 @@
 			return {
 				repliesCount: this.thread.replies_count,
 				locked: this.thread.locked,
-				editing: false
+				editing: false,
+				form: {
+					title: this.thread.title,
+					body: this.thread.body
+				}
 			}
 		},
 		methods: {
@@ -20,6 +24,18 @@
 			},
 			toggleEdit() {
 				this.editing = !this.editing;
+			},
+			update() {
+				axios.patch(`/threads/${this.thread.channel.slug}/${this.thread.slug}`, this.form)
+					 .then(() => {
+						flash('Your thread post has been updated.');
+						this.toggleEdit();
+				});
+			},
+			cancel() {
+				this.toggleEdit();
+				this.form.title = this.thread.title,
+				this.form.body = this.thread.body
 			}
 		}
 	}

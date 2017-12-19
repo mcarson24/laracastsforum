@@ -30,8 +30,7 @@ class UpdateThreadsTest extends TestCase
         	'body'  => 'This is the updated body.'
         ]);
 
-        $response->assertStatus(302);
-        $response->assertRedirect($thread->path());
+        $response->assertStatus(201);
         tap($thread->fresh(), function($thread) {
 	        $this->assertEquals('Updated Title', $thread->title);
 	        $this->assertEquals('This is the updated body.', $thread->body);
